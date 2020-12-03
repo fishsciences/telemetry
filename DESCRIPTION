@@ -1,0 +1,11 @@
+Package: telemetry
+Type: Package
+Title: Telemetry helper functions
+Version: 0.1.0
+Date: 2020-12-02
+Author: Matt Espe and Myfanwy Johnston
+Maintainer: Matt Espe <one.straw.consulting@gmail.com>
+Description: A package to take telemetry detection, tagging, and
+  deployment data and create a unified workflow for QA/QC, summary,
+  plotting, etc.
+License: GPL-3
