@@ -2,8 +2,9 @@
 
 These are some basic notes on how and why the telemetry package was
 designed the way it was. These are mostly intended for the package
-authors, but are included here incase it is of interest to anyone
-else.
+authors, but are included here in case it is of interest to anyone
+else. These notes should outline the thought process in designing the
+package, as well as provide an overview of the major pieces. 
 
 ## Motivation
 
@@ -11,28 +12,28 @@ Telemetry data from riverine systems typically has similar structure,
 and the steps needed to get it analysis-ready are likewise
 similar. Rather than having each project use one-off or sub-optimal
 code to get the data from it's raw state to its analysis-ready state,
-we looked to have a unifed framework. 
+we looked to have a unified framework. 
 
 One of the biggest motivations is to be able to take data from various
-differnet systems (e.g. different tag manufacterors, array setups,
+different systems (e.g. different tag manufacturers, array setups,
 etc.), and be able to use the same basic functions. 
 
 ## Package design 
 
 To accomplish this, we need to be able to convert data from various
-sources into a unifed data structure (the `telemetry` class). The
-details for how to convert each raw data type to this unifed structure
+sources into a unified data structure (the `telemetry` class). The
+details for how to convert each raw data type to this unified structure
 can be accomplished via specialized functions.
 
 Once in the `telemetry` class, the functions for QA/QC and
-verification can be used wihtout worrying about:
+verification can be used without worrying about:
 
   + divergent data structures, including variations in naming
     conventions for the columns in a table 
 	
   + incomplete/missing data
   
-  + differences in data formatting (e.g. `NA` values, datetime values,
+  + differences in data formatting (e.g. `NA` values, date-time values,
     etc.)
 	
 ### The `telemetry` class
@@ -42,8 +43,8 @@ riverine deployments typically have the following tables:
 
   + detections: raw detections from a receiver or set of
     receivers. May or may not be cleaned to exclude tags from other
-    studies, etc. These constitute a timeseries, where there is a
-    datetime of the detection, the tag transmitting, and the receiver
+    studies, etc. These constitute a time-series, where there is a
+    date-time of the detection, the tag transmitting, and the receiver
     which received the transmission. 
 	
   + tagging: details about the fish and the tags. This table links the
@@ -57,9 +58,9 @@ riverine deployments typically have the following tables:
 A `telemetry` object contains each of these pieces of information into
 a single R object. This allows us to:
 
-1. keep all the data objects related to eachother bundled together
+1. keep all the data objects related to each other bundled together
 
-1. pass all required tables into functions in a single opbject
+1. pass all required tables into functions in a single object
 
 1. keep track of meta-data, such as if the data have been QA/QC-ed
 
