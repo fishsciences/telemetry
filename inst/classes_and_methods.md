@@ -18,6 +18,32 @@ One of the biggest motivations is to be able to take data from various
 different systems (e.g. different tag manufacturers, array setups,
 etc.), and be able to use the same basic functions. 
 
+## Data characteristics
+
+The goal is to have an R object which incapsulates a single telemetry
+"study", hence it is worth exploring what we mean by "study" in this
+context. For the purposes of this package, a study does not refer to a
+single deployment, etc. Rather, we mean:
+
+  + Tagged fish: a set of fish which have been tagged, with a unique
+    identifier for each. These fish are deployed into the field/array
+    during a set period. Only fish in this table are considered "study
+    fish" - detections of other fish (e.g. from other concurrent
+    studies) are excluded.
+	
+  + Receivers: a set of receivers deployed during the release period
+    of fish. By definition, this will exclude receivers decommisioned
+    prior to the release of tagged fish, or deployed after the fish
+    have left the field/array. By definition, these receivers have a
+    geographic and temporal frame which must match the deployed
+    fish. Receivers outside of frame are excluded.
+	 
+
+Notice that in this context, a "study" can span many years, can
+include different species of fish, etc. The important point is these
+two requirements form a consistent dataset which can be encapsulated
+into a single R object.
+
 ## Package design 
 
 To accomplish this, we need to be able to convert data from various
@@ -36,7 +62,7 @@ verification can be used without worrying about:
   + differences in data formatting (e.g. `NA` values, date-time values,
     etc.)
 	
-### The `telemetry` class
+## The `telemetry` class
 
 Central to this effort is the `telemetry` class. Telemetry data for
 riverine deployments typically have the following tables:
@@ -105,7 +131,7 @@ cannot by definition contain other data):
     are valid relative to the tagging dates of the fish involved and
     the study period
 	
-  + Check that each detection has a ‘home”, i.e. fits within a
+  + Check that each detection has a "home", i.e. fits within a
     deployment period of at least one receiver (get_stations()
     function in ybt) 
 	
