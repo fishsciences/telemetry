@@ -16,3 +16,22 @@ setClass("telemetry",
                    quality_control_data = "list",
                    meta_data = "list"))
 
+# This is where we will do a lot of checks on the object validity
+# Many of these would normally be done as part of QA/QC,
+# but here we are using R's mechanisms to do the checks as part of
+# the class
+setValidity("telemetry",
+  function(object){
+      # Check detections all in tagging      
+
+      # 
+
+      TRUE
+  })
+
+
+setAs("list", "telemetry",
+      function(from){
+          
+          
+      })
