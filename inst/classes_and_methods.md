@@ -96,14 +96,14 @@ Thus, an object of class `telemetry` consists of:
     - TagID: character
 	- CodeSpace (optional - only acoustic tags): character
 	- ReceiverID: character
-	- datetime: POSIXct
+	- DateTime: POSIXct
   + tagging table: data.frame
     - TagID: character
 	- TagType: character, restricted to known tag types
 	- (other meta data): unrestricted\*
   + deployments table (optional): data.frame
     - receiverID: character
-	- Receiver groups: character
+	- ReceiverGroups: character
   + QA/QC meta data
     - what stages of QA/QC have been completed: list?
 	- is the data "analysis-ready" (defined below?): logical

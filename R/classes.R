@@ -12,5 +12,7 @@ setClass("telemetry",
          slots = c(detections = "data.frame",
                    tagging = "data.frame",
                    deployment = "data.frame",
-                   quality_control_status = "logical"))
+                   quality_control_status = "logical",
+                   quality_control_data = "list",
+                   meta_data = "list"))
 
