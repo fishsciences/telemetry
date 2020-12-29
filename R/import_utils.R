@@ -31,3 +31,26 @@ standardize_col_names = function(cnms,
     
     cnms
 }
+
+standardize_col_classes = function(x, 
+                                 col_classes = c(TagID = "character",
+                                              CodeSpace = "character",
+                                              ReceiverID = "character",
+                                              DateTime = "POSIXct",
+                                              TagType = "character"))
+{
+    i = match(names(col_classes), colnames(x))
+        
+    if(all(is.na(i))){
+        warning("No standardized column names found.\n",
+                "Please standardize column names first.")
+        return(x)
+    }
+    
+    # using/abusing mirrored names
+    tar_cols = names(col_classes)[!is.na(i)]
+    
+    x[tar_cols] = mapply(as, x[tar_cols], col_classes[tar_cols],
+                                   SIMPLIFY = FALSE)
+    return(x)
+}
