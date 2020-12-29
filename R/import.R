@@ -16,7 +16,11 @@ import_generic_data = function(detections, tagging, deployments = NULL,
             colnames(df) = standardize_col_names(colnames(df))
             df})
 
-    data = list(tabs, meta_data = meta_data, qc_status = false)
+    # Standardizing col classes not optional - required for functions
+    # later so needs to happen
+    tabs = lapply(tabs, standardize_col_classes)
+    
+    data = list(tabs, meta_data = meta_data, qc_status = FALSE)
     as(data, "telemetry")
 
 }
