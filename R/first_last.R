@@ -1,4 +1,4 @@
-#' Get first (minimum) and last (maximum) detection and stations of a tagged animal
+#' Subset to first (minimum) and last (maximum) detection and stations of a tagged animal
 #'
 #' @param detdf A detections dataframe
 #' @param datetimecol Name of the column (in quotes) corresponding to detection date and time. Default is "DateTimeUTC". Column must be in POSIXct ymd_hm or ymd_hms format)
@@ -45,7 +45,7 @@ fl_onefish = function(df,
 
 
 
-
+# old code
 if(FALSE){
   
   first_last <- function(detdf, 
