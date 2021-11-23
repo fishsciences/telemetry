@@ -2,7 +2,7 @@
 % Please edit documentation in R/first_at_final.R
 \name{first_at_final}
 \alias{first_at_final}
-\title{Subset first detection of a fish at its final known location}
+\title{Subset first detection of a fish + first detection at its final known location}
 \usage{
 first_at_final(
   dets_df,
@@ -12,11 +12,11 @@ first_at_final(
 )
 }
 \arguments{
-\item{dets_df}{a dataframe of detections for multiple tagged animals}
+\item{dets_df}{a dataframe of detections}
 
 \item{tagid_col}{Name of the column (in quotes) corresponding to individual tag IDs}
 
-\item{datetime_col}{Name of the column corresponding to detection date and time (must be in POSIXct ymd_hm/s format)}
+\item{datetime_col}{Name of the column corresponding to detection date and time (must be in POSIXct ymd_hms format)}
 
 \item{station_col}{Name of the column corresponding to location or station information}
 }
@@ -25,7 +25,7 @@ a dataframe with five columns: TagID, first_det (first detection of tag), first_
 last_arrival (first detection time at final station), last_stn (station where last arrival was recorded).
 }
 \description{
-Subset first detection of a fish at its final known location
+Subset first detection of a fish + first detection at its final known location
 }
 \details{
 #' This function takes a dataframe of detections and extracts the first detection of each tag, and the

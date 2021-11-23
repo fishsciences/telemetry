@@ -5,4 +5,5 @@
 #' @docType package
 #' @name telemetry
 #' @keywords internal
+#' @importFrom data.table rleid 
 "_PACKAGE"
