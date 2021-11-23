@@ -3,3 +3,4 @@
 export(first_and_last)
 export(first_at_final)
 export(tag_tales)
+importFrom(data.table,rleid)

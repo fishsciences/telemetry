@@ -11,3 +11,4 @@ Description: A package to take telemetry detection, tagging, and
 License: GPL-3
 RoxygenNote: 7.1.2
 Encoding: UTF-8
+Imports: data.table
