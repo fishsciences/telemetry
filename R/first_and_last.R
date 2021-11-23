@@ -17,12 +17,11 @@ first_and_last <- function(dets_df,
 
   f1 <- split(dets_df, dets_df[[tagid_col]])
   
-  tmp <- lapply(f1, fl_onefish, 
-                datetime = datetime_col)
+  tmp <- lapply(f1, fl_onefish, datetime = datetime_col)
   
   fldf = do.call(rbind, tmp)
                  
-  return(fldf) }
+  return(fldf) } # do I need this?
 
 
 # internal function - does operation for one fish
@@ -36,18 +35,7 @@ fl_onefish = function(df,
   dt_col = df[[datetime]] # assign datetime column 
     if(!is(dt_col, "POSIXct")) stop("Datetime column is not POSIXct")
 
-  firstlast =   
-    
-                    # repalce rbind with this-ish eventually
-                    # df[c(which.min(dt_col), 
-                    #  which.max(dt_col)), ]
-                
-                rbind( # could replace with which.min and which.max, and replace rbind with indexing []
-    
-                df[dt_col == min(dt_col), ], # min det
-                df[dt_col == max(dt_col), ] # max det
-                
-                )
+  firstlast =    df[c(which.min(dt_col), which.max(dt_col)), ]
   
   firstlast[!duplicated(firstlast[[datetime]]), ] # could be slow
   

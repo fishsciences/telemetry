@@ -46,4 +46,4 @@ x = first_and_last(dets_df = ac,
 
 # number of tags in the ending df should the same as the n tags in the original:
 stopifnot(length(unique(x$Transmitter)) == length(unique(ac$Transmitter)))
-       
+str(x)       
