@@ -27,7 +27,7 @@ stopifnot(y$first_det == min(ac_test$DateTimeUTC))
 stopifnot(y$first_stn == "RGD_VR2W")
 stopifnot(y$last_arrival == as.POSIXct("2018-05-01 17:11:53", tz = "UTC"))
 
-# returns one row?
+# does it return one row?
 stopifnot(nrow(telemetry:::faf_onefish(ac_test, 
                                        tidc2 = "Transmitter", 
                                        dtc2 = "DateTimeUTC", 
@@ -55,8 +55,8 @@ stopifnot(nrow(telemetry:::faf_onefish(one, tidc2 = "Transmitter",
 #  test input conditions
 # datetimecol should be POSIXct
 assertError(telemetry:::first_at_final(ac,  "Transmitter",
-                                                 "Transmitter",
-                                                  "StationName"))
+                                            "Transmitter",
+                                            "StationName"))
 x = first_at_final(dets_df = ac, 
                    tagid_col = "Transmitter",
                    datetime_col = "DateTimeUTC",
