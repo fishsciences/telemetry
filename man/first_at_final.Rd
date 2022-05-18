@@ -30,7 +30,7 @@ Subset first detection of a fish + first detection at its final known location
 \details{
 #' This function takes a dataframe of detections and extracts the first detection of each tag, and the
 first detection at each tag's last station, and returns a dataframe with this information so that the travel
-time can then be easily calculated
+time can be easily calculated across the two columns.
 }
 \author{
 Myfanwy Johnston
