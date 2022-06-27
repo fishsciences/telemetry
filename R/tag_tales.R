@@ -4,10 +4,10 @@ redRowFun = function(visits, dtc3, t3)
    {
     # vector of change points from a logical vector of rows whose diff > TimeThresh; each increment represents the row that should become a new station visit
     if(nrow(visits) > 1) {
-      breakup_vector = cumsum(c(0, diff(visits[[dtc3]])) > t2 ) # vector
+      breakup_vector = cumsum(c(0, diff(visits[[dtc3]])) > t3 ) # vector
       
       if(any(breakup_vector)) {
-        tmp = by(visits, breakup_vector, redRowFun, dtc3) # function calls itself to iterate through all the visits
+        tmp = by(visits, breakup_vector, redRowFun, dtc3, t3 = t3) # function calls itself to iterate through all the visits
         return(do.call(rbind, tmp)) 
       }
     }
@@ -25,16 +25,16 @@ redRowFun = function(visits, dtc3, t3)
 splitFishStationVisits =
   function(d, 
            s2,
-           t2 = Threshold,
+           t2,
            rowFunc = redRowFun,
-           dtc2 = Datetime_col)
+           dtc2)
   {
     j = order(d[[dtc2]])
     d = d[ j , ] 
     
     ## index of continuous times
     
-    g = rleid(s2[j])
+    g = data.table::rleid(s2[j])
     
     ans = by(d, g, rowFunc, dtc3 = dtc2, t3 = t2) # apply redRowFun by the station visit ID to the dataframe
     do.call(rbind, ans) # bind that into a dataframe
@@ -56,9 +56,7 @@ splitFishStationVisits =
 #'     Threshold = "`60*60*2`", that means that after a fish arrives
 #'     at a receiver, all detections that occur at that receiver
 #'     within two hours of the first arrival are considered part of the
-#'     same "stay" at that receiver.
-#'     
-#'     The tag_tales function assumes that all stations are spatially distinct,
+#'     same "stay" at that receiver. The tag_tales function assumes that all stations are spatially distinct,
 #'     and that any receivers that are close in space (and could result in
 #'     simultaneous detections) have already been grouped in the data by station name.
 #'     
