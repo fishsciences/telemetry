@@ -34,7 +34,7 @@ splitFishStationVisits =
     
     ## index of continuous times
     
-    g = data.table::rleid(s2[j])
+    g = rleid(s2[j])
     
     ans = by(d, g, rowFunc, dtc3 = dtc2, t3 = t2) # apply redRowFun by the station visit ID to the dataframe
     do.call(rbind, ans) # bind that into a dataframe
