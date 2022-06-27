@@ -4,10 +4,10 @@ redRowFun = function(visits, dtc3, t3)
    {
     # vector of change points from a logical vector of rows whose diff > TimeThresh; each increment represents the row that should become a new station visit
     if(nrow(visits) > 1) {
-      breakup_vector = cumsum(c(0, diff(visits[[dtc3]])) > t3 ) # vector
+      breakup_vector = cumsum(c(0, diff(visits[[dtc3]])) > t3) # vector
       
       if(any(breakup_vector)) {
-        tmp = by(visits, breakup_vector, redRowFun, dtc3, t3 = t3) # function calls itself to iterate through all the visits
+        tmp = by(visits, breakup_vector, redRowFun, dtc3, t3) # function calls itself to iterate through all the visits
         return(do.call(rbind, tmp)) 
       }
     }
