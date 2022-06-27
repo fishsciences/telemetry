@@ -15,7 +15,7 @@ d[order(d$DateTime_PST), ] # expected results: Verona arrival/departure same, Sa
 
 tag_tales(d, "TagID", "GEN", "DateTime_PST") # add stopifnot(identical()) test here to compare static inputs/outputs
 tag_tales(d, d$TagID, d$GEN, "DateTime_PST")
-tag_tales(d, d$TagID, d$GEN, d$DateTime_PST) # make error better
+# tag_tales(d, d$TagID, d$GEN, d$DateTime_PST) # make error better
 
 x = readRDS("inst/10.ybus_test_data.rds")
 x = x[order(x$DateTime_PST), ]

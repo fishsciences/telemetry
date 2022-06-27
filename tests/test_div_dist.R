@@ -17,7 +17,7 @@ dd$distance = 2:5
 ans = lapply(seq(nrow(dd)), function(i) div_dist(start = dd$departure[i],  # I don't know about this
                                            end = dd$first_arrs[i], 
                                            distance = dd$distance[i], 
-                                           time_units = "hours"))
+                                           time_units = "hour"))
 
 ans2 = do.call(rbind, ans)
 sum(dd$distance) == sum(ans2$prop_dist)

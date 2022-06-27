@@ -2,15 +2,14 @@
 % Please edit documentation in R/tag_tales.R
 \name{tag_tales}
 \alias{tag_tales}
-\title{Contstruct coherant individual movement paths from tag detection history dataframe}
+\title{Construct coherent individual movement paths from tag detection history dataframe}
 \usage{
 tag_tales(
   detdf,
   TagID_col,
   Station_col,
   Datetime_col = "DateTimeUTC",
-  Threshold = 60 * 60,
-  allow_overlap = TRUE
+  Threshold = 60 * 60
 )
 }
 \arguments{
@@ -25,15 +24,12 @@ in POSIXct format YYYY-MM-DD HH:MM:SS}
 
 \item{Threshold}{desired time threshold between station visits, in
 seconds.  See details.}
-
-\item{allow_overlap}{logical, if TRUE the fish paths are allowed to
-overlap so long as the threshold has not been exceeded}
 }
 \value{
 dataframe with fishpaths for each tagID
 }
 \description{
-Contstruct coherant individual movement paths from tag detection history dataframe
+Construct coherent individual movement paths from tag detection history dataframe
 }
 \details{
 The time threshold allows you to delineate the period of
@@ -42,6 +38,8 @@ The time threshold allows you to delineate the period of
     that receiver.  The default is 1 hour "(`60*60`)".  If you set
     Threshold = "`60*60*2`", that means that after a fish arrives
     at a receiver, all detections that occur at that receiver
-    within 2 hours of the first arrival are considered part of the
-    same "stay" at that receiver.
+    within two hours of the first arrival are considered part of the
+    same "stay" at that receiver. The tag_tales function assumes that all stations are spatially distinct,
+    and that any receivers that are close in space (and could result in
+    simultaneous detections) have already been grouped in the data by station name.
 }

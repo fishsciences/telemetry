@@ -32,6 +32,4 @@ in cases where the fish only has one detection associated, or where the first an
 }
 \author{
 Myfanwy Johnston
-
-Myfanwy Johnston
 }

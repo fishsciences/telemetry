@@ -9,6 +9,6 @@ Description: A package to take telemetry detection, tagging, and
   deployment data and create a unified workflow for QA/QC, summary,
   plotting, etc.
 License: GPL-3
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Encoding: UTF-8
 Imports: data.table

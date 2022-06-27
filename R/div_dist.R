@@ -13,7 +13,7 @@
 #' @export
 #'
 
-div_dist = function(start, end, distance, time_units = "hours") {
+div_dist = function(start, end, distance, time_units = "hour") {
   
   v = seq.POSIXt(from = start, to = end, 
                  by = time_units)

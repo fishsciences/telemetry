@@ -4,7 +4,7 @@
 \alias{div_dist}
 \title{Divide distance evenly across a units of a time span}
 \usage{
-div_dist(start, end, distance, time_units = "hours")
+div_dist(start, end, distance, time_units = "hour")
 }
 \arguments{
 \item{start}{}
