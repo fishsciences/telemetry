@@ -43,3 +43,6 @@ The time threshold allows you to delineate the period of
     and that any receivers that are close in space (and could result in
     simultaneous detections) have already been grouped in the data by station name.
 }
+\author{
+Myfanwy Johnston
+}

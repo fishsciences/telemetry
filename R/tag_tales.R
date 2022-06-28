@@ -61,9 +61,8 @@ splitFishStationVisits =
 #'     simultaneous detections) have already been grouped in the data by station name.
 #'     
 #' @return dataframe with fishpaths for each tagID
+#' @author Myfanwy Johnston
 #' @export
-#'
-
 tag_tales <- function(detdf, 
                       TagID_col, 
                       Station_col,

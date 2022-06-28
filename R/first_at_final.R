@@ -92,7 +92,7 @@ lastfirst_1fish <- function(x, tidc2, dtc2, stnc2) {
 
 } else {
 
-  x$rleidcol = data.table::rleid(x[[stnc2]]) # assign visit numbers
+  x$rleidcol = rleid(x[[stnc2]]) # assign visit numbers
   first_det_row = x[x[[dtc2]] == min(x[[dtc2]]), ] # pull first det row
   intermed_rows = x[x$rleidcol == max(x$rleidcol), ] # pull all rows at max station
 

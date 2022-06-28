@@ -5,5 +5,7 @@
 #' @docType package
 #' @name telemetry
 #' @keywords internal
-#' @importFrom data.table rleid 
+#' @importFrom data.table rleid shift
+#' @importFrom dplyr select
+#' @importFrom methods is
 "_PACKAGE"

@@ -1,6 +1,7 @@
-d = readRDS("inst/ac_test.rds") |>
+library(telemetry)
+d = readRDS(system.file(package = "telemetry", "ac_test.rds")) |>
   dplyr::select(Transmitter, StationName, DateTimeUTC) |>
-  tag_tales(TagID_col = "Transmitter", Station_col = "StationName", "DateTimeUTC", allow_overlap = FALSE)
+  tag_tales(TagID_col = "Transmitter", Station_col = "StationName", "DateTimeUTC")
 
 dd = d[d$Transmitter == unique(d$Transmitter)[1], ] # take down to 1 fish to test
 dd = dd[1:5, c("Transmitter", "StationName", "arrival", "departure")] # cut down rows and cols needed
