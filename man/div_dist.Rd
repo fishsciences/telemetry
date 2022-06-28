@@ -7,13 +7,13 @@
 div_dist(start, end, distance, time_units = "hour")
 }
 \arguments{
-\item{start}{}
+\item{start}{POSIX, start time}
 
-\item{end}{}
+\item{end}{POSIX, end time}
 
-\item{distance}{}
+\item{distance}{numeric, total distance}
 
-\item{time_units}{}
+\item{time_units}{character, time unit passed to \code{seq.POSIXt}}
 }
 \value{
 data frame with columns \itemize{
@@ -23,4 +23,12 @@ data frame with columns \itemize{
 }
 \description{
 Divide distance evenly across a units of a time span
+}
+\examples{
+tt = as.POSIXct(c("2020-01-01 00:00:00", "2020-01-02 12:00:00"))
+div_dist(tt[1], tt[2], distance = 10)
+
+}
+\author{
+Myfanwy Johnston
 }
