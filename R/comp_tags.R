@@ -17,8 +17,8 @@ comp_tags = function(v1, v2) {
   
   list(length_unique_v1 = length(unique(v1)),
        length_unique_v2 = length(unique(v2)),
-       sum_unique_v1_in_v2 = length(unique(v1)) - length(setdiff(v1, v2)),
-       sum_unique_v2_in_v1 = length(unique(v2)) - length(setdiff(v2, v1))
+       sum_unique_v1_in_v2 = sum(unique(v1) %in% unique(v2)),
+       sum_unique_v2_in_v1 = sum(unique(v2) %in% unique(v1))
   )
   
 }
