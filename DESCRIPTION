@@ -14,4 +14,4 @@ Encoding: UTF-8
 Imports: data.table,
 		 dplyr,
 		 methods
-		 
+Suggests: testthat

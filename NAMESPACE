@@ -2,8 +2,10 @@
 
 export(comp_tags)
 export(div_dist)
+export(find_orphans)
 export(first_and_last)
 export(first_at_final)
+export(get_stations)
 export(tag_tales)
 importFrom(data.table,rleid)
 importFrom(data.table,shift)
