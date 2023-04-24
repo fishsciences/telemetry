@@ -4,7 +4,7 @@ redRowFun = function(visits, dtc3, t3)
    {
     # vector of change points from a logical vector of rows whose diff > TimeThresh; each increment represents the row that should become a new station visit
     if(nrow(visits) > 1) {
-      breakup_vector = cumsum(c(0, diff(visits[[dtc3]])) > t3) # vector
+      breakup_vector = cumsum(c(0, difftime(visits[[dtc3]][-1], visits[[dtc3]][-nrow(visits)], units = "secs")) > t3) # vector
       
       if(any(breakup_vector)) {
         tmp = by(visits, breakup_vector, redRowFun, dtc3, t3) # function calls itself to iterate through all the visits
@@ -12,7 +12,7 @@ redRowFun = function(visits, dtc3, t3)
       }
     }
        
-    r = as.POSIXct(range(visits[[dtc3]])) # first and last detection
+    r = as.POSIXct(range(visits[[dtc3]])) # first and last detection - 
     data.frame(visits[1,], # use first row with all its columns
                arrival = r[1], # add arrival time
                departure = r[2], # and departure time
@@ -33,8 +33,8 @@ splitFishStationVisits =
     d = d[ j , ] 
     
     ## index of continuous times
-    
-    g = rleid(s2[j])
+    site_col = d[[s2]]
+    g = rleid(site_col)
     
     ans = by(d, g, rowFunc, dtc3 = dtc2, t3 = t2) # apply redRowFun by the station visit ID to the dataframe
     do.call(rbind, ans) # bind that into a dataframe
@@ -65,18 +65,23 @@ splitFishStationVisits =
 #' @export
 tag_tales <- function(detdf, 
                       TagID_col, 
-                      Station_col,
+                      Station_col = "StationName",
                       Datetime_col = "DateTimeUTC", 
                       Threshold = 60*60) {
 
     if(is.character(TagID_col) && length(TagID_col) != nrow(detdf))
         TagID_col = detdf[[TagID_col]]
-    if(is.character(Station_col) && length(Station_col) != nrow(detdf))
-        Station_col = detdf[[Station_col]]
+
+    # Duncan Temple Lang suggested a fix to allow the caller to
+    # provide a separate column to avoid a breaking change. However,
+    # this can only cause headaches - here, we force the user to
+    # provide a valid column name
+    if(!is.character(Station_col) && length(Station_col) > 1 && !Station_col %in% colnames(detdf))
+        stop("Station_col must be the name of the Station ID column in the detection data.frame")
     
-   f1 <- split(detdf, TagID_col)
+    f1 <- split(detdf, TagID_col)
     
-   f1 <- f1[ sapply(f1, nrow) > 0 ]
+    f1 <- f1[ sapply(f1, nrow) > 0 ]
   
    tmp = lapply(f1, 
                splitFishStationVisits, 
