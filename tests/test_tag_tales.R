@@ -61,5 +61,9 @@ ms = split(m, m$Transmitter)
 stopifnot(mapply(function(a, b){
     all(a$arrival %in% b$DateTimeUTC)},
     zs[names(ms)], ms))
-    
+
+# Check handling of Station_col arg
+tools::assertError(tag_tales(m, m$Transmitter, Station_col = m$StationName))
+tools::assertError(tag_tales(m, m$Transmitter, Station_col = "Bob"))
+tools::assertError(tag_tales(m, m$Transmitter, Station_col = rep("StationName", 10)))
 

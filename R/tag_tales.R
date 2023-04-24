@@ -76,7 +76,7 @@ tag_tales <- function(detdf,
     # provide a separate column to avoid a breaking change. However,
     # this can only cause headaches - here, we force the user to
     # provide a valid column name
-    if(!is.character(Station_col) && length(Station_col) > 1 && !Station_col %in% colnames(detdf))
+    if(!is.character(Station_col) || length(Station_col) > 1 || !Station_col %in% colnames(detdf))
         stop("Station_col must be the name of the Station ID column in the detection data.frame")
     
     f1 <- split(detdf, TagID_col)
