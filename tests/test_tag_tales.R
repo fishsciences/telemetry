@@ -24,3 +24,22 @@ y
 # test multiple fish
 m = readRDS(system.file(package = "telemetry", "ac_test.rds"))
 z = tag_tales(m, m$Transmitter, m$StationName)
+
+# Check for bug in issue #2
+# get first row for each fish
+
+tt = by(m, m$Transmitter, function(df){
+    df[which.min(df$DetectionDateTimeUTC8),]
+})
+
+# first visit in result
+t2 = by(z, z$Transmitter, function(df){
+    df[which.min(df$DetectionDateTimeUTC8),]
+})
+
+#They should match
+all(names(tt) == names(t2))
+
+stopifnot(all(sapply(tt, `[[`, "StationName") == sapply(t2, `[[`, "StationName")))
+stopifnot(all(sapply(tt, `[[`, "DetectionDateTimeUTC8") == sapply(t2, `[[`, "arrival"))) # This fails when the visist are arbtirary
+         
