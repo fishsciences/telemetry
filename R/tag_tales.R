@@ -20,14 +20,14 @@ redRowFun = function(visits, dtc3, t3)
     
   }
 
-# orders a fish's history, and applies an index to each station's detections, then applies redRowFunc to get the visits according to the time threshold
+# takes a data frame of all the detections for one fish, orders it by Datetime_col, applies an index to each station's detections, then applies redRowFunc to group the visits according to the time threshold
 
 splitFishStationVisits =
-  function(d, 
-           s2,
-           t2,
-           rowFunc = redRowFun,
-           dtc2)
+  function(d, # data frame of one fish's detection history
+           s2, # Station_col
+           t2, # threshold
+           rowFunc = redRowFun, # function to apply 
+           dtc2) # DateTime_col
   {
     j = order(d[[dtc2]])
     d = d[ j , ] 
@@ -69,17 +69,19 @@ tag_tales <- function(detdf,
                       Datetime_col = "DateTimeUTC", 
                       Threshold = 60*60) {
 
-    if(is.character(TagID_col) && length(TagID_col) != nrow(detdf))
-        TagID_col = detdf[[TagID_col]]
-
+    if(is.character(TagID_col) && length(TagID_col) != nrow(detdf)) # if the TagID col is provided as a character
+        TagID_col = detdf[[TagID_col]]                              # and its length isn't equal to the nrow in the 
+                                                                    # detections df, then we assume they're providing
+                                                                    # the name of the col; we will pull the whole col
+                                                                    # for use in the rest of the fxn
     # Duncan Temple Lang suggested a fix to allow the caller to
     # provide a separate column to avoid a breaking change. However,
     # this can only cause headaches - here, we force the user to
     # provide a valid column name
-    if(!is.character(Station_col) || length(Station_col) > 1 || !Station_col %in% colnames(detdf))
+    if(length(Station_col) > 1 && !Station_col %in% colnames(detdf))
         stop("Station_col must be the name of the Station ID column in the detection data.frame")
     
-    f1 <- split(detdf, TagID_col)
+    f1 <- split(detdf, TagID_col) # we need the entire tagid column to be able to split the df correctly
     
     f1 <- f1[ sapply(f1, nrow) > 0 ]
   

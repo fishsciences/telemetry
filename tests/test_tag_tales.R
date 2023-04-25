@@ -17,10 +17,12 @@ library(telemetry)
 #tag_tales(d, d$TagID, d$GEN, "DateTime_PST")
 # tag_tales(d, d$TagID, d$GEN, d$DateTime_PST) # make error better
 
-x = readRDS(system.file(package = "telemetry", "10.ybus_test_data.rds"))
-x = x[order(x$DateTime_PST), ]
+# check that data frame does not need to be ordered by date time first for tag_tales to give same results:
+aa = readRDS(system.file(package = "telemetry", "10.ybus_test_data.rds"))
+x = aa[order(aa$DateTime_PST), ]
 y = tag_tales(x, "FishID", "GEN", Datetime_col = "DateTime_PST")
-y
+z = tag_tales(aa, "FishID", "GEN", Datetime_col = "DateTime_PST")
+stopifnot(identical(y, z))
 
 
 # test multiple fish
@@ -39,12 +41,12 @@ t2 = by(z, z$Transmitter, function(df){
     df[which.min(df$arrival),]
 })
 
-#They should match
+#The TagIDs should match
 all(names(tt) == names(t2))
 
 # The station name and times should match for the earliest detection
 stopifnot(all(sapply(tt, `[[`, "StationName") == sapply(t2, `[[`, "StationName")))
-stopifnot(all(sapply(tt, `[[`, "DateTimeUTC") == sapply(t2, `[[`, "arrival"))) # This fails when the visist are arbtirary
+stopifnot(all(sapply(tt, `[[`, "DateTimeUTC") == sapply(t2, `[[`, "arrival"))) # This fails when the visits are arbitrary
 
 # Check that they all have the right stations
 tt = tapply(m$StationName, m$Transmitter, unique)
@@ -66,4 +68,4 @@ stopifnot(mapply(function(a, b){
 tools::assertError(tag_tales(m, m$Transmitter, Station_col = m$StationName))
 tools::assertError(tag_tales(m, m$Transmitter, Station_col = "Bob"))
 tools::assertError(tag_tales(m, m$Transmitter, Station_col = rep("StationName", 10)))
-
+tools::assertError(tag_tales(m, m$Transmitter, Station_col = 10))
