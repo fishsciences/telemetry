@@ -1,7 +1,7 @@
 Package: telemetry
 Type: Package
 Title: Telemetry helper functions
-Version: 0.1.2
+Version: 0.2.0
 Date: 2020-12-02
 Author: Myfanwy Johnston and Matt Espe
 Maintainer: Myfanwy Johnston <myfanwy.johnston@fishsciences.net>
@@ -14,5 +14,5 @@ Encoding: UTF-8
 Imports: data.table,
 		 dplyr,
 		 methods
-Suggests: testthat
+Suggests: testthat,
 		  tools
