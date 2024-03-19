@@ -2,9 +2,11 @@
 
 export(comp_tags)
 export(div_dist)
+export(end_session)
 export(find_orphans)
 export(first_and_last)
 export(first_at_final)
+export(start_session)
 export(tag_tales)
 import(RCurl)
 import(RJSONIO)

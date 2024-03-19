@@ -20,7 +20,7 @@
 ##'     \code{getCurlHandle()}. If one is not provided, it will be
 ##'     created. Please note, it is best practice to establish a curl
 ##'     handle when interacting with an API
-##' @param ... additional arguments passed to \code{RCurl::getURL()}}
+##' @param ... additional arguments passed to \code{RCurl::getURL()}
 ##' @return list
 ##' @author Matt Espe
 ##' @export
@@ -47,7 +47,8 @@ start_session = function(uname, pwd,
 
   c(list(uname = uname,
          curl = curl_handle,
-         start_time = Sys.time()),
+         start_time = Sys.time(),
+         base_url = api_baseurl),
        fromJSON(rsp))
                            
 
@@ -66,7 +67,7 @@ start_session = function(uname, pwd,
 ##' @param api_baseurl character, the base URL for the database server
 ##' @param end_point character, the API end point for the login
 ##' @param api_url character, the URL for the database server login
-##' @param ... additional arguments passed to \code{RCurl::getURL()}}
+##' @param ... additional arguments passed to \code{RCurl::getURL()}
 ##' @param uname character
 ##' @param pwd character. See notes for best practices
 ##' @return  NULL
@@ -74,7 +75,7 @@ start_session = function(uname, pwd,
 ##' @export
 end_session = function(session, token = session$unToken,
                        curl_handle = session$curl,
-                       api_baseurl,
+                       api_baseurl = session$base_url,
                        end_point = "/api/auth/logout",
                        api_url = paste0(api_baseurl, end_point),
                        ...)

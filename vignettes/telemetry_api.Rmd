@@ -34,7 +34,50 @@ my_session = start_session(usr, pwd, api_url)
 
 The returned object stores all the information about the session that
 was just established, including the user who started the session, the
-time the session was started (as the session will timeout after some
-time), a curl handle for the session, and a unique token for the
-server to identify the session.
+URL of the database server, the time the session was started (as the
+session will timeout after some time), a curl handle for the session,
+and a unique token for the server to identify the session. This object
+is then passed into subsequent functions, simplifying the process of
+interacting with the server.
+
+## Downloading data
+
+To download the data associated with an individual user, we use the
+`download_data()` function. This takes a session object created above,
+as well as a region and speciesID to download data for. It will
+download a SQLite3 database which is a subset of that the user has
+access to. By default, this is stored in a temporary file (which is
+deleted when the user's computer is restarted), but we can also
+specifiy a location to keep a persistent copy:
+
+```{r}
+download_data(session, region = 1, speciesID = 1, db_file = "my.db")
+```
+
+This stores the database in the file called `my.db`  in the current working directory.
+
+We can extract data from this database with the function `extract_data()`
+
+```{r}
+tele_data = extract_data("my.db")
+```
+
+This creates a new environment (a list like object), which contains all of the tables from the specified database file.
+
+```{r}
+tele_data$Tags ## a data.frame of the Tags table
+```
+
+Alternatively, we can assign the tables directly into our Global
+environment, but this is potentially dangerous - it will overwrite any
+existing objects with similar names as the tables in the
+database. Only do this if you are sure you don't have objects in your
+environment with the same names, or do not mind losing those objects.
+
+```{r}
+extract_data("my.db", env = .Global_env()) # Potentially dangerous!!
+```
+
+
+
 
