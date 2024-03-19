@@ -2,10 +2,13 @@
 
 export(comp_tags)
 export(div_dist)
+export(download_data)
 export(end_session)
+export(extract_data)
 export(find_orphans)
 export(first_and_last)
 export(first_at_final)
+export(list_db_entry)
 export(start_session)
 export(tag_tales)
 import(RCurl)

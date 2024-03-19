@@ -8,7 +8,7 @@ end_session(
   session,
   token = session$unToken,
   curl_handle = session$curl,
-  api_baseurl,
+  api_baseurl = session$base_url,
   end_point = "/api/auth/logout",
   api_url = paste0(api_baseurl, end_point),
   ...

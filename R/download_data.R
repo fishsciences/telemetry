@@ -42,7 +42,7 @@ download_data = function(session,
                  ## curl = curl_handle,
                  ...)
   
-  writeBin(rsp, file = db_file)
+  writeBin(rsp, con = db_file)
   return(db_file)
 }
 
