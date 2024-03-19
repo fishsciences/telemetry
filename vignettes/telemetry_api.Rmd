@@ -1,0 +1,40 @@
+---
+title: "Quickstart Guide for the Telemetry API"
+author: "Matt Espe"
+date: "2024 Mar 19"
+
+---
+
+## Establishing a Session
+
+In order to start interacting with the API server, you must first
+establish a session using a pre-established set of login credentials
+(Username and Password). It is best practice to avoid storing these in
+files which are easily shared with others either directly or
+indirectly (e.g. an accidental git commit). Please note, this includes
+.Rhistory files (which store console commands). Therefore, you want to
+use the password in a way that defines it without ever printing it in
+your script or R console.
+
+A simple way to enact this is to stored login credentials in a file
+that is separate from the analysis script, and is ignored by git in a
+.gitignore file:
+
+```{r}
+## Defines api_url, usr, and pwd
+source("api_credentials.R", echo = FALSE)
+```
+
+Using these, we can establish a session,
+
+```{r}
+library(telemetry)
+my_session = start_session(usr, pwd, api_url)
+```
+
+The returned object stores all the information about the session that
+was just established, including the user who started the session, the
+time the session was started (as the session will timeout after some
+time), a curl handle for the session, and a unique token for the
+server to identify the session.
+
