@@ -17,4 +17,6 @@ Imports: data.table,
 		 RCurl,
 		 methods
 Suggests: testthat,
-		  tools
+		  tools,
+		  rmarkdown
+VignetteBuilder: rmarkdown 

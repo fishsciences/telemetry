@@ -51,7 +51,7 @@ deleted when the user's computer is restarted), but we can also
 specifiy a location to keep a persistent copy:
 
 ```{r}
-download_data(session, region = 1, speciesID = 1, db_file = "my.db")
+download_data(my_session, region = 1, speciesID = 1, db_file = "my.db")
 ```
 
 This stores the database in the file called `my.db`  in the current working directory.
@@ -78,6 +78,22 @@ environment with the same names, or do not mind losing those objects.
 extract_data("my.db", env = .Global_env()) # Potentially dangerous!!
 ```
 
+## Listing entries
 
+When we want to see what the available entries for a certain category
+are, e.g. species ID, we use the `list_db_entry()` function. This
+function takes the name of the entry category, and returns a
+`data.frame` of the respective entries. It requires an active session.
 
+```{r}
+list_db_entry("species", session = my_session)
+```
 
+## Ending a session
+
+Once we are done with our interactions with the database, we should
+close out our session. We can do this with `end_session()`
+
+```{r}
+end_session(my_session)
+```

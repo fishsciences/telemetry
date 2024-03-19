@@ -24,6 +24,9 @@ list_db_entry = function(entry, additionalID = NA,
                          api_url = paste0(api_baseurl, end_point),
                          ...)
 {
+  if(length(entry) > 1)
+    stop("Please provide only one `entry` at a time.")
+  
   i = match(entry, names(token_names))
   if(is.na(i))
     stop("Provided `entry` does not line-up with an API end-point. Must be one of:\n", paste(names(token_names), collapse = ", "))
@@ -38,6 +41,10 @@ list_db_entry = function(entry, additionalID = NA,
 
   if(!is.na(j)){
     nms = token_names2[[j]]
+    
+    if(is.na(additionalID))
+      stop("Provided `entry` requires `additionalID` of ", nms)
+
     payload[[nms[[1]]]][[nms[[2]]]] = additionalID
   }          
   
@@ -56,9 +63,16 @@ token_names = list(affiliations = "affReqTok",
                    networks = "netReqTok",
                    orgs = "orgReqTok",
                    species = "specReqTok",
-                   antenna = "antReqTok")
+                   "tech/antenna" = "antReqTok",
+                   "tech/compat/antenna" = "antCompReqTok",
+                   "tech/compat/tag" = "tagCompReqTok",
+                   "tech/tag" = "tagTechReqTok",
+                   users = "userReqTok")
      
 token_names2 = list(affiliations = c("affReqUID", "unUID"),
-     batches = c("batchReqProj", "unProjectID"))
+                    batches = c("batchReqProj", "unProjectID"),
+                    users = c("userReqOrg", "unOID"),
+                    "tech/compat/antenna" = c("antCompReqTTID", "unATID"),
+                    "tech/compat/tag" = c("tagCompReqTTID", "unTTID"))
      
      
