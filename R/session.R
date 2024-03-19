@@ -13,10 +13,11 @@ start_session = function(uname, pwd,
 # browser()
   
   rsp =  getURL(url = api_url,
-                     httpheader = c("Content-Type" = "application/json"),
-                     postfields = payload,
-                     curl = curl_handle,
-                     verbose = TRUE)
+                httpheader = c("Content-Type" = "application/json"),
+                postfields = payload,
+                curl = curl_handle,
+                ...)
+                
 
 
   c(list(uname = uname,
@@ -27,3 +28,15 @@ start_session = function(uname, pwd,
 
 }
 
+
+end_session = function(session, token = session$unToken,
+                       curl_handle = session$curl,
+                       api_url, ...)
+{
+  getURL(url = api_url,
+         httpheader = c("Content-Type" = "application/json"),
+         postfields = toJSON(list(unLogout = c(unToken = token))),
+         curl = curl_handle,
+         ...)
+
+}
