@@ -4,7 +4,16 @@
 \alias{find_orphans}
 \title{Identify orphaned detections between deployment and detection records}
 \usage{
-find_orphans(detections_df, deployments_df, fuzzy_match = 60 * 60, ...)
+find_orphans(
+  detections_df,
+  deployments_df,
+  deployment_start_col = "DeploymentStart",
+  deployment_end_col = "DeploymentEnd",
+  deployment_rec_col = "Receiver",
+  detections_df_datetime_col = "DateTimePST",
+  fuzzy_match = 60 * 60,
+  ...
+)
 }
 \arguments{
 \item{detections_df}{a dataframe of detections}
@@ -12,6 +21,8 @@ find_orphans(detections_df, deployments_df, fuzzy_match = 60 * 60, ...)
 \item{deployments_df}{a data frame of receiver deployments}
 
 \item{fuzzy_match}{desired time threshold to expand the deployment windows by in order to accommodate slight mismatches between deployment windows and detections}
+
+\item{...}{arguments passed on to data.table::foverlaps()}
 }
 \value{
 data frame of detections with deployment data brought in, where NAs in the ExpandedStart and ExpandedEnd columns indicate orphaned detections.
@@ -20,7 +31,7 @@ data frame of detections with deployment data brought in, where NAs in the Expan
 Identify orphaned detections between deployment and detection records
 }
 \details{
-relies on data.table::foverlaps() to accomplish the merge.  Warnings will issue if you have detections with no matching deployments, or if you have detections with multiple matching deployments (some of which are probably caused by the fuzzy_match).
+relies on data.table::foverlaps() to accomplish the merge.  Warnings will issue if you have detections with no matching deployments, or if you have detections with multiple matching deployments (some of which are caused by the fuzzy_match).
 }
 \author{
 Myfanwy Johnston

@@ -7,7 +7,7 @@
 tag_tales(
   detdf,
   TagID_col,
-  Station_col,
+  Station_col = "StationName",
   Datetime_col = "DateTimeUTC",
   Threshold = 60 * 60
 )
