@@ -95,7 +95,7 @@ end_session = function(session, token = session$unToken,
            ...)
 
     # handle errors here
-  if(h$value()["status"] != "200")
+  if(h$value()["status"] != "204")
     stop(h$value()["status"], ": ", h$value()["statusMessage"])
 
   return(invisible(NULL))
