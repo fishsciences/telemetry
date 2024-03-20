@@ -42,7 +42,7 @@ download_data = function(session,
                  ## curl = curl_handle,
                  ...)
   # handle errors here
-  if(rawToChar(rsp[1:5]) == "Error")
+  if(rawToChar(rsp[1:5]) %in% c("Error", "Autho"))
     stop(rawToChar(rsp))
   
   writeBin(rsp, con = db_file)
