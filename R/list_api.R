@@ -47,13 +47,20 @@ list_db_entry = function(entry, additionalID = NA,
 
     payload[[nms[[1]]]][[nms[[2]]]] = additionalID
   }          
+  h = basicHeaderGatherer()
   
   rsp = getURL(url = api_url,
               httpheader = c("Content-Type" = "application/json"),
               postfields = toJSON(payload),
               curl = curl_handle,
+              headerfunction = h$update,
               ...)
-   as.data.frame(do.call(rbind, fromJSON(rsp)))
+  
+  # handle errors here
+  if(h$value()["status"] != "200")
+    stop(h$value()["status"], ": ", h$value()["statusMessage"])
+
+  as.data.frame(do.call(rbind, fromJSON(rsp)))
 }
 
 
