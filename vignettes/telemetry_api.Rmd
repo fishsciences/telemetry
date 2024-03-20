@@ -2,7 +2,11 @@
 title: "Quickstart Guide for the Telemetry API"
 author: "Matt Espe"
 date: "2024 Mar 19"
-
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Telemetry API Quickstart}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## Establishing a Session
