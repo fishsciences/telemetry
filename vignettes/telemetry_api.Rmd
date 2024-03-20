@@ -79,7 +79,7 @@ database. Only do this if you are sure you don't have objects in your
 environment with the same names, or do not mind losing those objects.
 
 ```{r, eval = FALSE}
-extract_data("my.db", env = .Global_env()) # Potentially dangerous!!
+extract_data("my.db", env = .GlobalEnv) # Potentially dangerous!!
 ```
 
 ## Listing entries

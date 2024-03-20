@@ -35,14 +35,19 @@ download_data = function(session,
       downReqTok = c(unToken = token)))
   
   ## browser()
-  
-    rsp = getBinaryURL(url = api_url,
-                 httpheader = c("Content-Type" = "application/json"),
-                 postfields = payload,
-                 ## curl = curl_handle,
-                 ...)
+  # for request status
+  h = basicHeaderGatherer()
+  rsp = getBinaryURL(url = api_url,
+                     httpheader = c("Content-Type" = "application/json"),
+                     postfields = payload,
+                     headerfunction = h$update,
+                     ## curl = curl_handle,
+                     ...)
   # handle errors here
-  if(rawToChar(rsp[1:5]) == "Error")
+  if(h$value()["status"] != "200")
+    stop(h$value()["status"], ": ", h$value()["statusMessage"])
+  
+  if(rawToChar(rsp[1:5]) %in% c("Error", "Autho"))
     stop(rawToChar(rsp))
   
   writeBin(rsp, con = db_file)

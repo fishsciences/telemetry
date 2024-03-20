@@ -37,12 +37,17 @@ start_session = function(uname, pwd,
   payload = toJSON(list(loginName = list(unUserName = uname), loginPwd = pwd))
 # browser()
   
+  h = basicHeaderGatherer()
   rsp =  getURL(url = api_url,
                 httpheader = c("Content-Type" = "application/json"),
                 postfields = payload,
                 curl = curl_handle,
+                headerfunction = h$update,
                 ...)
                 
+  # handle errors here
+  if(h$value()["status"] != "200")
+    stop(h$value()["status"], ": ", h$value()["statusMessage"])
 
 
   c(list(uname = uname,
@@ -80,12 +85,19 @@ end_session = function(session, token = session$unToken,
                        api_url = paste0(api_baseurl, end_point),
                        ...)
 {
-
+  h = basicHeaderGatherer()
+  
     getURL(url = api_url,
            httpheader = c("Content-Type" = "application/json"),
            postfields = toJSON(list(unLogout = c(unToken = token))),
            curl = curl_handle,
+           headerfunction = h$update,
            ...)
-    return(invisible(NULL))
+
+    # handle errors here
+  if(h$value()["status"] != "200")
+    stop(h$value()["status"], ": ", h$value()["statusMessage"])
+
+  return(invisible(NULL))
 }
 
