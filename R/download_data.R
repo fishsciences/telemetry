@@ -41,6 +41,9 @@ download_data = function(session,
                  postfields = payload,
                  ## curl = curl_handle,
                  ...)
+  # handle errors here
+  if(rawToChar(rsp[1:5]) == "Error")
+    stop(rawToChar(rsp))
   
   writeBin(rsp, con = db_file)
   return(db_file)
@@ -63,6 +66,8 @@ download_data = function(session,
 extract_data = function(db_file, env = new.env())
 {
   db = dbConnect(RSQLite::SQLite(), db_file)
+  on.exit(dbDisconnect(db))
+  
   tbls = dbListTables(db)
 
   sapply(tbls, function(x) {
