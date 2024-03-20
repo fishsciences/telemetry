@@ -2,7 +2,11 @@
 title: "Quickstart Guide for the Telemetry API"
 author: "Matt Espe"
 date: "2024 Mar 19"
-
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Telemetry API Quickstart}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## Establishing a Session
@@ -20,14 +24,14 @@ A simple way to enact this is to stored login credentials in a file
 that is separate from the analysis script, and is ignored by git in a
 .gitignore file:
 
-```{r}
+```{r, eval = FALSE}
 ## Defines api_url, usr, and pwd
 source("api_credentials.R", echo = FALSE)
 ```
 
 Using these, we can establish a session,
 
-```{r}
+```{r, eval = FALSE}
 library(telemetry)
 my_session = start_session(usr, pwd, api_url)
 ```
@@ -50,7 +54,7 @@ access to. By default, this is stored in a temporary file (which is
 deleted when the user's computer is restarted), but we can also
 specifiy a location to keep a persistent copy:
 
-```{r}
+```{r, eval = FALSE}
 download_data(my_session, region = 1, speciesID = 1, db_file = "my.db")
 ```
 
@@ -58,13 +62,13 @@ This stores the database in the file called `my.db`  in the current working dire
 
 We can extract data from this database with the function `extract_data()`
 
-```{r}
+```{r, eval = FALSE}
 tele_data = extract_data("my.db")
 ```
 
 This creates a new environment (a list like object), which contains all of the tables from the specified database file.
 
-```{r}
+```{r, eval = FALSE}
 tele_data$Tags ## a data.frame of the Tags table
 ```
 
@@ -74,7 +78,7 @@ existing objects with similar names as the tables in the
 database. Only do this if you are sure you don't have objects in your
 environment with the same names, or do not mind losing those objects.
 
-```{r}
+```{r, eval = FALSE}
 extract_data("my.db", env = .Global_env()) # Potentially dangerous!!
 ```
 
@@ -85,7 +89,7 @@ are, e.g. species ID, we use the `list_db_entry()` function. This
 function takes the name of the entry category, and returns a
 `data.frame` of the respective entries. It requires an active session.
 
-```{r}
+```{r, eval = FALSE}
 list_db_entry("species", session = my_session)
 ```
 
@@ -94,6 +98,6 @@ list_db_entry("species", session = my_session)
 Once we are done with our interactions with the database, we should
 close out our session. We can do this with `end_session()`
 
-```{r}
+```{r, eval = FALSE}
 end_session(my_session)
 ```
