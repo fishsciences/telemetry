@@ -5,14 +5,32 @@ if(file.exists("toy_credentials.R")){
 
   a = start_session(usr, pwd, test_api, verbose = TRUE)
 
-  assertError(download_data(a))
+  # both region and species
+  b = download_data(a, region = 3, speciesID = 1)
 
-  b = download_data(a, region = 1, speciesID = 1)
+  c2 = extract_data(b)
+  as.list(c2)
 
+  # region only
+  b = download_data(a, region = 3)
+
+  c2 = extract_data(b)
+  as.list(c2)
+  nrow(c2$Registrations)
+
+  # species only
+  b = download_data(a, speciesID = 1)
+  
+  c2 = extract_data(b)
+  as.list(c2)
+  nrow(c2$Registrations)
+
+  # should download everything
+  b = download_data(a, verbose = TRUE)
   c = extract_data(b)
   as.list(c)
-  c$AntennaTech$manifest ## What is this? blob??
 
+  # To compare to the above
   if(FALSE){
   ## pull down all data from toy dataset
   x = expand.grid(region = 1:10, speciesID = 1:5)

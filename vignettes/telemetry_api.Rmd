@@ -60,7 +60,16 @@ download_data(my_session, region = 1, speciesID = 1, db_file = "my.db")
 
 This stores the database in the file called `my.db`  in the current working directory.
 
-We can extract data from this database with the function `extract_data()`
+Both `speciesID` and `region` are optional. If both are omitted, the
+entire dataset the user has access to will be returned. 
+
+Of note when selecting by species: Only tags that are registered in
+the database will have a species associated with them. This means that
+a query by species ID will return only registered tags.
+
+
+We can extract data from this database with the function
+`extract_data()`
 
 ```{r, eval = FALSE}
 tele_data = extract_data("my.db")

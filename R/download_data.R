@@ -28,11 +28,15 @@ download_data = function(session,
                          ...)
 {
   
-  payload = toJSON(
-    list(downReqSpec = list(
-      downloadRegion = c(unRegion = region),
-      downloadSpeciesID = c(unSpecID = speciesID)),
-      downReqTok = c(unToken = token)))
+  payload = list(downReqTok = c(unToken = token), downReqSpec = list())
+
+  if(!missing(speciesID))
+    payload$downReqSpec$downloadSpeciesID = c(unSpecID = speciesID)
+  if(!missing(region))
+    payload$downReqSpec$downloadRegion = c(unRegion = region)
+  
+  payload = toJSON(payload, collapse = " ")
+  payload = gsub("\\[\\]", "{}", payload) ## Hack to get the downReqSpec right
   
   ## browser()
   # for request status
@@ -46,13 +50,15 @@ download_data = function(session,
   # handle errors here
   if(h$value()["status"] != "200")
     stop(h$value()["status"], ": ", h$value()["statusMessage"])
-  
+
+  # should be caught w/status code - test and then remove this if possible
   if(rawToChar(rsp[1:5]) %in% c("Error", "Autho"))
     stop(rawToChar(rsp))
   
   writeBin(rsp, con = db_file)
   return(db_file)
 }
+
 
 ##' Extracts all tables from an input database into data.frames inside
 ##' an isolated environment. If the \code{env} variable is set to
@@ -77,8 +83,19 @@ extract_data = function(db_file, env = new.env())
 
   sapply(tbls, function(x) {
     tmp = dbGetQuery(db, sprintf("SELECT * FROM %s", x))
+    tmp = fix_blobs(tmp)
     assign(x, tmp, envir = env)
   })
-
+  
   env
+}
+
+fix_blobs = function(tbl)
+{
+  i = sapply(tbl, function(x) inherits(x, "blob"))
+
+  tbl[i] = lapply(tbl[i], function(r) sapply(r, rawToChar))
+
+  tbl
+
 }

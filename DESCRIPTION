@@ -1,7 +1,7 @@
 Package: telemetry
 Type: Package
 Title: Telemetry helper functions
-Version: 0.3.4
+Version: 0.3.5
 Date: 2020-12-02
 Author: Myfanwy Johnston and Matt Espe
 Maintainer: Myfanwy Johnston <myfanwy.johnston@fishsciences.net>
@@ -21,3 +21,4 @@ Imports: data.table,
 Suggests: testthat,
 		  tools,
 		  knitr
+LazyData: true
