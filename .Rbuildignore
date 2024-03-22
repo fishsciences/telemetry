@@ -3,3 +3,4 @@
 ^\.github$
 ^.*\.sqlite$
 ^.*\.db$
+tests/toy_credentials.R

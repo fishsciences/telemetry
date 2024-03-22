@@ -91,6 +91,8 @@ extract_data = function(db_file, env = new.env())
 }
 
 fix_blobs = function(tbl)
+  ## needed to convert the raw (binary) blobs in the payload slot to
+  ## text
 {
   i = sapply(tbl, function(x) inherits(x, "blob"))
 

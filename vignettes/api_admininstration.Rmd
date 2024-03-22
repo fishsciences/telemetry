@@ -1,0 +1,105 @@
+---
+title: "Administering the Database"
+author: "Matt Espe"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Telemetry API Administration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, setup, include = FALSE}
+library(telemetry)
+```
+
+# Creating New Entries
+
+New entries (users, affiliations, organizations) are done via the
+`create_entry()` function. This function is built to be flexible
+around any of the `/api/admin/create/*` end-points. The general use of
+the `create_entry()` function is to provide a session for an existing
+user, and then list the required variables for the entry using `key =
+value` entries separated by commas. The key must match the appropriate
+required keys for each end-point.
+
+The available endpoints can be listed with
+
+```{r}
+list_endpoints()
+```
+
+As each end-point has different required keys that can be difficult to
+remember and keep straight, there is a convienence function to list
+the required variables for a particular end-point. For example, to
+list the required variables for the `/api/admin/create/user` endpoint
+
+```{r}
+list_endpoint_variable("/api/admin/create/user")
+```
+
+Note that the end-point must match to one of those listed by the
+`list_endpoints()` function.
+
+## Creating Users
+
+Creating a new user must be done from an existing user with adequate
+permissions.
+
+To create a new user, we must provide `createUserInfo`, `unUserName`,
+`createUserPass`, and the `unToken` for an already authorized user.
+
+```{r, eval = FALSE}
+
+create_entry(my_session,
+             createUserInfo = "nothing here",
+             unUserName = "Matt",
+             createUserPass = "qwerty",
+             unToken = my_session$unToken,
+             end_point = "/api/admin/create/user")
+```
+
+This will create a new user named "Matt" in the database. However,
+this new user is not affiliated with any organization and hence will
+not have access to any data. 
+
+We need to either affiliate this new user with an existing
+organization, or we need to create a new organization and then
+affiliate the new user with the new organization.
+
+Here, we will just add this user to an existing organization.
+
+First, we'll list the current organizations,
+
+```{r, eval = FALSE}
+list_db_entry("orgs", session = a)
+```
+```
+  orgID orgName                           orgInfo
+1     1    PITA                PIT Administration
+2     2    NATO North Atlantic Trout Organization
+```
+
+We would like to add "Matt" to the organization 2. We can do that with
+another call to `create_entry()`, but now with the correct variables
+for the `/api/admin/create/affiliation` endpoint.
+
+```{r, eval = FALSE}
+create_entry(my_session, unOID = 2, unUID = 3, unToken = my_session$unToken,
+             end_point = "/api/admin/create/affiliation")
+```
+
+This adds "Matt" as a user affiliated with the "NATO" organization. We
+can check this by listing the users associated with organization 2
+using the `list_db_entry()` function
+
+```{r, eval = FALSE} 
+list_db_entry("users", 2, my_session)
+
+```
+
+```
+  userDataID userDataName                                  userDataInfo
+1          2         Alex this user did not provide contact information
+2          3         Matt                                  nothing here
+```
+

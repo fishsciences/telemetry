@@ -1,7 +1,7 @@
 if(file.exists("toy_credentials.R")){
   library(telemetry)
   library(tools)
-  source("tests/toy_credentials.R") # stores credentials - not committed
+  source("toy_credentials.R") # stores credentials - not committed
 
   a = start_session(usr, pwd, test_api, verbose = TRUE)
 
@@ -43,7 +43,7 @@ if(file.exists("toy_credentials.R")){
 
   sapply(all_data, function(x) nrow(x$Tags))
   sapply(all_data, function(x) nrow(x$Registrations))
-  }
+o  }
 
   end_session(a, api_baseurl = test_api)
   assertError(download_data(a, region = 1, speciesID = 1))

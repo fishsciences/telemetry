@@ -1,5 +1,31 @@
 # Generic for create* endpoints
 
+##' This is a flexible function for interacting with any of the
+##' numerous /api/admin/create/* endpoints. It functions by taking key
+##' = value pairs required for each of the endpoints and crafting the
+##' appropriate JSON payload to submit to the server.
+##'
+##' There are some particularities around how the database expects
+##' some elements to be created. See the vignette
+##' "Telemetry API Administration" for details.
+##'
+##' 
+##' @title Create Database Entry
+##' @param session list, and active session object created by \code{start_session()}
+##' @param ... key = value pairs of parameters for each end point
+##'   request. These vary by endpoint. For a list of the required
+##'   variables for each end point, use
+##'   \code{list_endpoint_variable()}
+##' @param end_point chracter, the end point for the API
+##' @param token character, the unToken for an active session
+##' @param curl_handle an existing curl handle for an active
+##'   session. If not provided, one will be created just for this
+##'   call.
+##' @param api_baseurl character, the base URL for the API
+##' @param api_url character, the full URL to the endpoint
+##' @return json result
+##' @author Matt Espe
+##' @export
 create_entry = function(session,
                         ...,
                         end_point,
@@ -38,14 +64,15 @@ create_entry = function(session,
   rsp
 }
 
-##' .. content for \description{} (no empty lines) ..
+##' Convienence functions to list and check the variables for each API
+##' endpoint.
 ##'
 ##' @title Check Endpoint Variables
 ##' @param x named vector of variables, where the names are the
 ##'   variable names, and the values are the value to assign to that
 ##'   variable
 ##' @param end_pt character, the name of the end point
-##' @return 
+##' @return variable names, endpoint names, or NULL 
 ##' @author Matt Espe
 ##' @export
 check_variables = function(x, end_pt)
@@ -80,7 +107,7 @@ list_endpoint_variable = function(end_pt = c())
 ## extracted from the doc.md file in inst/parse_api_docs.R
 affiliation_payload = function(dots)
 {
-  list(createAFFOID = c(unOID = dots$unOID),
+  list(createAffOID = c(unOID = dots$unOID),
        createAffToken = c(unToken = dots$unToken),
        createAffUID = c(unUID = dots$unUID))
 }
@@ -137,7 +164,7 @@ tech_tag = function(dots)
 user_payload = function(dots)
 {
   list(createUserInfo = dots$createUserInfo, 
-       createUserName = c(unUserName = dots$createUserName),
-       createUserPass = dots$UserPass, 
+       createUserName = c(unUserName = dots$unUserName),
+       createUserPass = dots$createUserPass, 
        createUserToken = c(unToken = dots$unToken))
 }
