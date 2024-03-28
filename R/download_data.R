@@ -96,7 +96,12 @@ fix_blobs = function(tbl)
 {
   i = sapply(tbl, function(x) inherits(x, "blob"))
 
-  tbl[i] = lapply(tbl[i], function(r) sapply(r, rawToChar))
+  tbl[i] = lapply(tbl[i], function(r) {
+    ans = character(length(r))
+    j = is.na(r)
+    ans[!j] = sapply(r[!j], rawToChar)
+    ans
+    })
 
   tbl
 
