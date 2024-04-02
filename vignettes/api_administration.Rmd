@@ -29,7 +29,7 @@ list_endpoints()
 ```
 
 As each end-point has different required keys that can be difficult to
-remember and keep straight, there is a convienence function to list
+remember and keep straight, there is a convenience function to list
 the required variables for a particular end-point. For example, to
 list the required variables for the `/api/admin/create/user` endpoint
 
