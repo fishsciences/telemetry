@@ -2,7 +2,9 @@
 
 export(check_variables)
 export(comp_tags)
+export(create_antData)
 export(create_entry)
+export(create_payload)
 export(div_dist)
 export(download_data)
 export(end_session)

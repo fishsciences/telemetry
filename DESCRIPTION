@@ -1,7 +1,7 @@
 Package: telemetry
 Type: Package
 Title: Telemetry helper functions
-Version: 0.4.1
+Version: 0.5.0
 Date: 2020-12-02
 Author: Myfanwy Johnston and Matt Espe
 Maintainer: Myfanwy Johnston <myfanwy.johnston@fishsciences.net>
@@ -9,7 +9,7 @@ Description: A package to take telemetry detection, tagging, and
   deployment data and create a unified workflow for QA/QC, summary,
   plotting, etc.
 License: GPL-3
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: data.table,

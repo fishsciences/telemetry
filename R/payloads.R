@@ -134,7 +134,7 @@ create_payload = function(end_pt, ...)
            tagTechReqTok = c(unToken = dots$unToken)), 
          "/api/list/users" = list(
            userReqOrg = c(unOID = dots$unOID),
-           userReqTok = c(unToken = dots$unToken))
+           userReqTok = c(unToken = dots$unToken)),
          stop("Unknown end point"))
 }
 
