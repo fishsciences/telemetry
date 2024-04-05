@@ -13,8 +13,18 @@ create_payload = function(end_pt, ...)
   dots = list(...)
   check_variables(dots, end_pt) 
 
+  ## Additional checks for the batch end point
+  if(end_pt == "/api/admin/create/batch"){
+    if(!inherits(dots$batchDataSchema, "data.frame") ||
+         !all(colnames(dots$batchDataSchema) %in% c("fields", "units")))
+      stop("`batchDataSchema` must be a data.frame with two columns named 'fields' and 'units'")
+    if(!inherits(dots$tagDataPayload, "data.frame") ||
+         !all(colnames(dots$tagDataPayload) %in% dots$batchDataSchema$fields))
+      stop("Provided `batchDataSchema$fields` and `tagDataPayload` do not match")
+  }
+  
   ## Pulled out of the docs.md programmatically and then edited by
-  ## hand
+  ## hand - probably can programmatically alter
   switch(end_pt, 
          "/api/admin/create/affiliation" = list(
            createAffOID = c(unOID = dots$unOID), 
@@ -23,18 +33,17 @@ create_payload = function(end_pt, ...)
          "/api/admin/create/batch" = list(
            createBatchReqData = list(
              batchDataProject = c(unProjectID = dots$UnProjectID), 
-             batchDataSchema = dots$batchDataSchema, # needs to be generated
+             batchDataSchema = dots$batchDataSchema, # data.frame
              batchDataSpecies = c(unSpecID = dots$unSpecID), 
              batchDataTech = c(unTTID = dots$unTTID)),
            createBatchReqTags = list(
              list(tagDataName = c(unTagName = dots$unTagName), 
-           tagDataPayload = dots$tagDataPayload, # needs to be generated
+           tagDataPayload = dots$tagDataPayload, # data.frame
            tagDataTime = dots$tagDataTime)), 
            createBatchReqTok = c(unToken = dots$unToken)), 
          "/api/admin/create/network" = list(
            createNetReqAnts = list(
-             # Not sure if this will work
-             dots$antData, # needs to be generated
+             dots$antData, # nested list
              createNetReqName = c(unNetName = dots$unNetName), 
              createNetReqOrg = c(unOID = dots$unOID),
              createNetReqTok = c(unToken = dots$unToken))), 
