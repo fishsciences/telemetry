@@ -13,6 +13,8 @@ create_payload = function(end_pt, ...)
   dots = list(...)
   check_variables(dots, end_pt) 
 
+  check_data_types(dots)
+  
   ## Additional checks for the batch end point
   if(end_pt == "/api/admin/create/batch"){
     if(!inherits(dots$batchDataSchema, "data.frame") ||
@@ -182,3 +184,18 @@ create_one_ant = function(df)
 }
 
 
+check_data_types = function(dots)
+{
+  chars = grep("Token|Name|Pass|Info|Unit|Start|End", names(dots), ignore.case = TRUE)
+  ints = grep("ID|Region", names(dots))
+
+  is_char = sapply(dots[chars], is, "character")
+  is_ints = sapply(dots[ints], is, "numeric")
+
+  if(any(!is_char))
+    stop("provided data ", names(dots)[chars][!is_char], " is not of class 'character'")
+  if(any(!is_ints))
+    stop("provided data ", names(dots)[ints][!is_ints], " is not of class 'integer'")
+  
+  return(invisible(NULL))
+}

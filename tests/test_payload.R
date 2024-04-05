@@ -9,3 +9,13 @@ test_df = data.frame(unATID = letters,
                      unRegion = 1,
                      antDataStart = Sys.time())
 
+
+## Test checks
+assertError(telemetry:::check_data_types(list(unOID = "bob")))
+telemetry:::check_data_types(list(unOID = 1, Region = 2))
+
+assertError(telemetry:::check_data_types(list(unOID = 1, Region = "2")))
+
+assertError(telemetry:::check_data_types(list(name = 1)))
+assertError(telemetry:::check_data_types(list(unToken = 1)))
+
