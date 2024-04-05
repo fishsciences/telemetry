@@ -23,19 +23,18 @@ create_payload = function(end_pt, ...)
          "/api/admin/create/batch" = list(
            createBatchReqData = list(
              batchDataProject = c(unProjectID = dots$UnProjectID), 
-             batchDataSchema = list(fields = dots$fields,
-                                    units = dots$units),
+             batchDataSchema = dots$batchDataSchema, # needs to be generated
              batchDataSpecies = c(unSpecID = dots$unSpecID), 
              batchDataTech = c(unTTID = dots$unTTID)),
            createBatchReqTags = list(
              list(tagDataName = c(unTagName = dots$unTagName), 
-           tagDataPayload = dots$tagDataPayload,
+           tagDataPayload = dots$tagDataPayload, # needs to be generated
            tagDataTime = dots$tagDataTime)), 
            createBatchReqTok = c(unToken = dots$unToken)), 
          "/api/admin/create/network" = list(
            createNetReqAnts = list(
              # Not sure if this will work
-             dots$antData, 
+             dots$antData, # needs to be generated
              createNetReqName = c(unNetName = dots$unNetName), 
              createNetReqOrg = c(unOID = dots$unOID),
              createNetReqTok = c(unToken = dots$unToken))), 
@@ -73,7 +72,7 @@ create_payload = function(end_pt, ...)
              createTagTechToken = c(unToken = dots$unToken))), 
          "/api/admin/create/user" = list(
            createUserInfo = dots$createUserInfo, 
-           createUserName = c(unUserName = dots$createUserName),
+           createUserName = c(unUserName = dots$unUserName),
            createUserPass = dots$createUserPass, 
            createUserToken = c(unToken = dots$unToken)),
          "/api/admin/delete/affiliation" = list(

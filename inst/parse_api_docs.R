@@ -25,4 +25,14 @@ schema = lapply(templates, names)
 
 schema = lapply(schema, function(x) strsplit(x, "\\."))
 api_variable_names = lapply(schema, function(x) sapply(x, function(y) y[length(y)]))
+
+## Manually fix network and batch
+api_variable_names$`/api/admin/create/batch` = grep("Fork Length|Weight|fields|units",
+                                                    api_variable_names$`/api/admin/create/batch`,
+                                                    invert = TRUE, value = TRUE)
+api_variable_names$`/api/admin/create/batch` = c(api_variable_names$`/api/admin/create/batch`,
+                                                 "batchDataSchema", "tagDataPayload")
+
+api_variable_names$`/api/admin/create/network` = c("unNetName", "unOID", "unToken", "antData")
+
 save(api_variable_names, file = "data/api_variable_names.rda")

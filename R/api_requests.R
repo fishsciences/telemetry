@@ -32,7 +32,7 @@ send_api_request = function(session,
                             curl_handle = session$curl,
                             api_baseurl = session$base_url,
                             api_url = paste0(api_baseurl, end_point),
-                            .curlOpts)
+                            .curlOpts = list())
 {
   
   payload = create_payload(..., end_point)

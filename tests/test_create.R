@@ -13,10 +13,11 @@ if(file.exists("toy_credentials.R")){
   list_db_entry("users", 1, a)
   list_db_entry("users", 2, a)
 
+  list_db_entry("affiliations", 2, a)
   
   send_api_request(a,
                    createUserInfo = "nothing here",
-                   unUserName = "Matt2",
+                   unUserName = "Matt",
                    createUserPass = "qwerty",
                    unToken = a$unToken,
                    end_point = "/api/admin/create/user")
@@ -25,12 +26,13 @@ if(file.exists("toy_credentials.R")){
 
   # add user above to an existing affiliation
   send_api_request(a,
-                   unOID = 2,
+                   unOID = 1,
                    unUID = 4,
                    unToken = a$unToken,
                    end_point = "/api/admin/create/affiliation")
 
-  list_db_entry("users", 2, a) # No affiliation yet, so doesn't show up in users? WTAF
+  list_db_entry("users", 2, a) 
+  list_db_entry("users", 1, a) 
 
   list_db_entry("affiliations", 2, session = a)
   list_db_entry("orgs", session = a)
@@ -38,10 +40,23 @@ if(file.exists("toy_credentials.R")){
   list_endpoint_variable("/api/admin/delete/user")
 
   send_api_request(a,
-                   unUID = 4,
+                   unUID = 3,
                    unToken = a$unToken,
                    end_point = "/api/admin/delete/user")
 
+  # User is gone
+  list_db_entry("users", 2, a) 
+  list_db_entry("users", 1, a) 
+
+  # create new user with different name
+  send_api_request(a,
+                   createUserInfo = "nothing here",
+                   unUserName = "Matt2",
+                   createUserPass = "qwerty",
+                   unToken = a$unToken,
+                   end_point = "/api/admin/create/user")
+
+  # New user inherited old affiliations!
   list_db_entry("users", 2, a)
   
   b = start_session("Matt", "qwerty", test_api, verbose = TRUE)
