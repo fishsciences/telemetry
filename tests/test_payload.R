@@ -19,3 +19,5 @@ assertError(telemetry:::check_data_types(list(unOID = 1, Region = "2")))
 assertError(telemetry:::check_data_types(list(name = 1)))
 assertError(telemetry:::check_data_types(list(unToken = 1)))
 
+assertError(check_variables(list(unOID = 1), "/api/admin/create/user"))
+check_variables(list(unToken = "a"), "api/list/orgs")

@@ -8,17 +8,22 @@ create_registration_data = function(df,
     stop("Missing columns in data.frame: ",
          paste(setdiff(req_cols,
                        colnames(df)), collapse = ", "))
-  
+
+  if(!all(sapply(df[req_cols], class) == "character")){
+    warning("Converting required columns to character")
+    df[req_cols] = lapply(df[req_cols], as.character)
+  }
+    
   ## Check the df here for data types?
-  lapply(seq(nrow(df)), function(i) create_one_ant(df[i,]))
+  lapply(seq(nrow(df)), function(i) create_one_registration(df[i,], data_cols))
 }
 
-create_one_registration = function(df)
+create_one_registration = function(df, other_cols)
 {
   list(regDataAnt = c(unAntName = df$unAntName),
+       regDataData = unlist(df[other_cols]),
        regDataTag = c(unTagName = df$unTagName),
-       regDataTime = df$regDataTime,
-       regDataData = toJSON(df[,other_cols]))
+       regDataTime = c(df$regDataTime))
 }
 
 ##' @param registration_data data.frame containing registration data
@@ -41,7 +46,7 @@ api_upload_data = function(session,
                            .curlOpts = list())
 {
   payload = list(
-    upRegData = create_registration_data(registration_data,
+    upReqData = create_registration_data(registration_data,
                                          other_data_column_names),
     upReqTok = list(unToken = token))
   
@@ -56,8 +61,8 @@ api_upload_data = function(session,
   
   # handle errors here
   if(h$value()["status"] != "204")
-    stop(h$value()["status"], ": ", h$value()["statusMessage"])
+    stop(h$value()["status"], ": ", h$value()["statusMessage"], "\n", rsp)
   
-  fromJSON(rsp)
+  return(TRUE)
   
 }

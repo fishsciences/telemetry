@@ -199,3 +199,23 @@ check_data_types = function(dots)
   
   return(invisible(NULL))
 }
+
+##' Convienence functions to list and check the variables for each API
+##' endpoint.
+##'
+##' @title Check Endpoint Variables
+##' @param x named vector of variables, where the names are the
+##'   variable names, and the values are the value to assign to that
+##'   variable
+##' @param end_pt character, the name of the end point
+##' @return variable names, endpoint names, or NULL 
+##' @author Matt Espe
+##' @export
+check_variables = function(x, end_pt)
+{
+  tmp = api_variable_names[[end_pt]]
+  var_present = tmp %in% names(x)
+  if(!all(var_present))
+    stop("Required variable ", paste(tmp[!var_present], collapse = ", "), " is not provided")
+  return(invisible(NULL))
+}

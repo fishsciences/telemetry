@@ -47,7 +47,7 @@ start_session = function(uname, pwd,
                 
   # handle errors here
   if(h$value()["status"] != "200")
-    stop(h$value()["status"], ": ", h$value()["statusMessage"])
+    stop(h$value()["status"], ": ", h$value()["statusMessage"], "\n", rsp)
 
 
   c(list(uname = uname,
@@ -87,7 +87,7 @@ end_session = function(session, token = session$unToken,
 {
   h = basicHeaderGatherer()
   
-    getURL(url = api_url,
+  rsp = getURL(url = api_url,
            httpheader = c("Content-Type" = "application/json"),
            postfields = toJSON(list(unLogout = c(unToken = token))),
            curl = curl_handle,
@@ -96,7 +96,7 @@ end_session = function(session, token = session$unToken,
 
     # handle errors here
   if(h$value()["status"] != "204")
-    stop(h$value()["status"], ": ", h$value()["statusMessage"])
+    stop(h$value()["status"], ": ", h$value()["statusMessage"], "\n", rsp)
 
   return(invisible(NULL))
 }

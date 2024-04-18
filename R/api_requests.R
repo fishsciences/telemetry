@@ -47,30 +47,12 @@ send_api_request = function(session,
                .opts = .curlOpts)
     # handle errors here
   if(h$value()["status"] != "200")
-    stop(h$value()["status"], ": ", h$value()["statusMessage"])
+    stop(h$value()["status"], ": ", h$value()["statusMessage"],
+         "\n", rsp)
 
   fromJSON(rsp)
 }
 
-##' Convienence functions to list and check the variables for each API
-##' endpoint.
-##'
-##' @title Check Endpoint Variables
-##' @param x named vector of variables, where the names are the
-##'   variable names, and the values are the value to assign to that
-##'   variable
-##' @param end_pt character, the name of the end point
-##' @return variable names, endpoint names, or NULL 
-##' @author Matt Espe
-##' @export
-check_variables = function(x, end_pt)
-{
-  tmp = api_variable_names[[end_pt]]
-  d = setdiff(names(x), tmp)
-  if(length(d) != 0)
-    stop("Check provided `...` for proper end-point variable names")
-  return(invisible(NULL))
-}
 
 
 ##' @rdname check_variables
