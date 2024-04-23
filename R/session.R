@@ -73,8 +73,6 @@ start_session = function(uname, pwd,
 ##' @param end_point character, the API end point for the login
 ##' @param api_url character, the URL for the database server login
 ##' @param ... additional arguments passed to \code{RCurl::getURL()}
-##' @param uname character
-##' @param pwd character. See notes for best practices
 ##' @return  NULL
 ##' @author Matt Espe
 ##' @export

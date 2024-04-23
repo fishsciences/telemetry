@@ -31,10 +31,6 @@ handle when interacting with an API}
 \item{api_url}{character, the URL for the database server login}
 
 \item{...}{additional arguments passed to \code{RCurl::getURL()}}
-
-\item{uname}{character}
-
-\item{pwd}{character. See notes for best practices}
 }
 \description{
 Ends the session for an certain token.
