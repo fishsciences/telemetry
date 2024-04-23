@@ -35,6 +35,15 @@ create_one_registration = function(df, other_cols)
 ##'   before the upload.
 ##' @rdname send_api_request
 ##' @export
+##' @examples
+##' \dontrun{
+##' test_df = data.frame(unAntName = "NATO-StanNetwork-1",
+##'                      unTagName = 99999,
+##'                      regDataTime = format(Sys.time(), "%FT%T%z"),
+##'                      temp = 39.0,
+##'                      test2 = 2)
+##'   api_upload_data(my_session, test_df, c("temp"))
+##' }
 api_upload_data = function(session,
                            registration_data,
                            other_data_column_names,

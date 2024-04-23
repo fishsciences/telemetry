@@ -12,21 +12,38 @@ vignette: >
 library(telemetry)
 ```
 
-# Creating New Entries
+# Overview of the `send_api_request()` function
 
-New entries (users, affiliations, organizations) are done via the
-`send_api_request()` function. This function is built to be flexible
-around any of the `/api/admin/create/*` end-points. The general use of
-the `send_api_request()` function is to provide a session for an existing
-user, and then list the required variables for the entry using `key =
-value` entries separated by commas. The key must match the appropriate
-required keys for each end-point.
+Most interactions with the database are performed via the
+`send_api_request()` function. This function helps the R user create
+valid API requests and submits them to the API. Since most
+interactions will happen via this function, it is worth understanding
+how this functions works.
 
-The available endpoints can be listed with
+First, the `send_api_request()` function is a flexible function for
+submitting *most* API requests via a single interface. In order to
+achieve this flexibility, the function takes an active session object
+created via `start_session()`, an endpoint to submit the request to
+(one of the options as listed by `list_endpoints()`), and then a set of
+`key = value` pairs required by the endpoint specified as additional
+arguments to the function (see case study below for example).
 
-```{r}
-list_endpoints()
+The required `key = value` pairs are different for each endpoint, yet
+the mechanism for submitting them is similar in any case. For
+example, if the endpoint requires the variable "unTagName", this
+can be provided to `send_api_request()` like
+	
+```{r, eval = FALSE}
+send_api_request(session = my_session,
+                 unTagName = "some_tag_name",
+                 end_point = "/api/some/endpoint")
 ```
+
+
+There are two important details to remember about the keys: 1) the key
+must match the appropriate required keys for each end-point exactly
+(keys are case-sensitive), and 2) all keys for a given endpoint must
+be supplied.
 
 As each end-point has different required keys that can be difficult to
 remember and keep straight, there is a convenience function to list
@@ -37,16 +54,34 @@ list the required variables for the `/api/admin/create/user` endpoint
 list_endpoint_variable("/api/admin/create/user")
 ```
 
-Note that the end-point must match to one of those listed by the
-`list_endpoints()` function.
+## Case Study: Creating New User Entry
 
-## Creating Users
+Creating a new entries for users is done via the `send_api_request()`
+function. The general use of the `send_api_request()` function is to
+provide a session for an existing user, and then list the required
+variables for the entry using `key = value` entries separated by
+commas.
 
-Creating a new user must be done from an existing user with adequate
-permissions.
+### Finding required variables to include
+
+First, we will check the required keys for the `/api/admin/create/user` endpoint
+
+```{r}
+list_endpoint_variable("/api/admin/create/user")
+```
+
+This shows that we need to provide 4 values for this request;
+"createUserInfo", "unUserName", "createUserPass", and "unToken".
+
+### Creating a New User
+
+*NOTE: Creating a new user must be done from an existing user with
+adequate permissions. Thus, the "unToken" provided is for an existing
+session for an existing user.*
 
 To create a new user, we must provide `createUserInfo`, `unUserName`,
-`createUserPass`, and the `unToken` for an already authorized user.
+`createUserPass`, and the `unToken` for an already authorized user's
+login session (i.e. a session object created via `start_session()`)..
 
 ```{r, eval = FALSE}
 
@@ -60,7 +95,9 @@ send_api_request(my_session,
 
 This will create a new user named "Matt" in the database. However,
 this new user is not affiliated with any organization and hence will
-not have access to any data. 
+only have access to data that is not registered to an organization. 
+
+### Adding a New User to an Organization
 
 We need to either affiliate this new user with an existing
 organization, or we need to create a new organization and then
@@ -81,7 +118,7 @@ list_db_entry("orgs", session = a)
 
 We would like to add "Matt" to the organization 2. We can do that with
 another call to `send_api_request()`, but now with the correct variables
-for the `/api/admin/create/affiliation` endpoint.
+for the `/api/admin/create/affiliation` endpoint ("unOID", "unUID", and "unToken").
 
 ```{r, eval = FALSE}
 send_api_request(my_session,
@@ -104,4 +141,49 @@ list_db_entry("users", 2, my_session)
 1          2         Alex this user did not provide contact information
 2          3         Matt                                  nothing here
 ```
+
+## Registration Data Upload
+
+There are a few particularities to be aware of when uploading new
+registration data to the database.
+
+First, the registrations must be for an antenna already entered into
+the database (i.e. one that is listed by
+`list_db_entry("antenna")`). If the antenna is not already
+in the database, it must be added prior to uploading the registration
+data. 
+
+Second, the registrations should be organized into a `data.frame` with
+columns named "unAntName" (the unique antenna name), "unTagName" (the
+unique tag name), and "regDataTime" (a POSIX timestamp for the
+registration, including the timezone). Additional columns can be
+appended to the data via the `data_cols` argument - a vector of the
+column names of additional columns to be included in the "payload"
+slot of the registrations table. These additional columns will be
+marshalled to JSON before being stored in the "payload" slot.
+
+Once the registrations have been prepared according to the above
+requirements, it can be uploaded to the database with
+`api_upload_data()`. As with all the other API functions, it requires
+an active session.
+
+```{r, eval = FALSE}
+api_upload_data(session = my_session,
+                registration_data = new_registration_df,
+                other_data_column_names = c("temperature", "turbidity"))
+                
+```
+
+It is worth noting that any tag names can be included in the
+registrations, including ones not listed in the "Tags" table. On upload, if
+another organization has claimed ownership of a tag ID, the new
+registration data associated with that tag will automatically become
+associated with that organization.
+
+**Q: Is this weird? This means the uploading organization might not be
+able to see the data they just uploaded.**
+
+**Q: Is there any way to resolve tag collisions? (two distinct tags with the same tag name)**
+
+
 

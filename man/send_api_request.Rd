@@ -29,7 +29,8 @@ api_upload_data(
 )
 }
 \arguments{
-\item{session}{list, and active session object created by \code{start_session()}}
+\item{session}{list, and active session object created by
+\code{start_session()}}
 
 \item{...}{key = value pairs of parameters for each end point
 request. These vary by endpoint. For a list of the required
@@ -47,6 +48,9 @@ call.}
 \item{api_baseurl}{character, the base URL for the API}
 
 \item{api_url}{character, the full URL to the endpoint}
+
+\item{.curlOpts}{additional arguments passed to
+\code{RCurl::getURL()}}
 
 \item{registration_data}{data.frame containing registration data
 to upload. Must have columns named "unAntName", "unTagName",
@@ -70,6 +74,25 @@ appropriate JSON payload to submit to the server.
 There are some particularities around how the database expects
 some elements to be created. See the vignette
 "Telemetry API Administration" for details.
+}
+\examples{
+\dontrun{
+send_api_request(my_session,
+                createUserInfo = "nothing here",
+                unUserName = "Matt",
+                createUserPass = "qwerty",
+                unToken = my_session$unToken,
+                end_point = "/api/admin/create/user")                 
+
+}
+\dontrun{
+test_df = data.frame(unAntName = "NATO-StanNetwork-1",
+                     unTagName = 99999,
+                     regDataTime = format(Sys.time(), "\%FT\%T\%z"),
+                     temp = 39.0,
+                     test2 = 2)
+  api_upload_data(my_session, test_df, c("temp"))
+}
 }
 \author{
 Matt Espe

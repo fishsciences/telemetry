@@ -10,7 +10,8 @@
 ##'
 ##' 
 ##' @title Send Database API request
-##' @param session list, and active session object created by \code{start_session()}
+##' @param session list, and active session object created by
+##'   \code{start_session()}
 ##' @param ... key = value pairs of parameters for each end point
 ##'   request. These vary by endpoint. For a list of the required
 ##'   variables for each end point, use
@@ -22,9 +23,21 @@
 ##'   call.
 ##' @param api_baseurl character, the base URL for the API
 ##' @param api_url character, the full URL to the endpoint
+##' @param .curlOpts additional arguments passed to
+##'   \code{RCurl::getURL()}
 ##' @return json result
 ##' @author Matt Espe
 ##' @export
+##' @examples
+##' \dontrun{
+##' send_api_request(my_session,
+##'                 createUserInfo = "nothing here",
+##'                 unUserName = "Matt",
+##'                 createUserPass = "qwerty",
+##'                 unToken = my_session$unToken,
+##'                 end_point = "/api/admin/create/user")                 
+##'
+##' }
 send_api_request = function(session,
                             ...,
                             end_point,
