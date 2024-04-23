@@ -3,3 +3,5 @@
 ##'
 ##'
 "api_variable_names"
+
+utils::globalVariables("api_variable_names")
