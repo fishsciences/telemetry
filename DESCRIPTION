@@ -4,7 +4,7 @@ Title: Telemetry helper functions
 Version: 0.6.2
 Date: 2020-12-02
 Author: Myfanwy Johnston and Matt Espe
-Maintainer: Myfanwy Johnston <myfanwy.johnston@fishsciences.net>
+Maintainer: Matt Espe <matt.espe@fishsciences.net>
 Description: A package to take telemetry detection, tagging, and
   deployment data and create a unified workflow for QA/QC, summary,
   plotting, etc.
@@ -20,5 +20,6 @@ Imports: data.table,
 		 methods
 Suggests: testthat,
 		  tools,
-		  knitr
+		  knitr,
+		  rmarkdown
 LazyData: true
