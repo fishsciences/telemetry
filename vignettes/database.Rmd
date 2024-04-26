@@ -1,0 +1,197 @@
+---
+title: "Administering the Database"
+author: "Matt Espe"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Telemetry API Administration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Database Documentation 
+
+There 14 different type of entities represented in the database: 
+
+    Users 
+
+    Organizations 
+
+    Affiliations 
+
+    Projects 
+
+    Species 
+
+    Tags 
+
+    Antennas 
+
+    Batches (tagging records) 
+
+    Antenna networks 
+
+    Antenna outages 
+
+    Tag technologies 
+
+    Antenna technologies 
+
+    Technology compatibility records 
+
+    Registration records 
+
+Most of these entity types represent exactly what their name suggests, but a few might require additional explanations, which we provide in this document. Each entity type corresponds to a table containing records of that type. 
+
+With two exceptions (i.e. affiliations and tech compatibility records), each of these tables contain an integer-valued column called id. This is a unique numeric identifier automatically assigned to a record by the database system when that record is created. These identifiers are used internally to reference the record from another table. They are of interest only to library writers. There is no reason to ever present them to the end user, although there is no harm in doing so. Figure 1 contains a diagram representing all the tables and the way they reference each other using these keys (represented as dotted lines). 
+
+User records (table Users) consist of the following fields: 
+
+    id, unique integer-valued record identifier 
+
+    name, a text-valued unique identifier intended for human use (e.g logging in) 
+
+    passwd, a text-valued salted hash of the user’s password. 
+
+    info, a free form text field providing additional information about the user, such as contact information. 
+
+Organization records (table Orgs): 
+
+    id, unique integer-valued record identifier 
+
+    name, a text-valued unique identifier intended for human use. 
+
+    info, a free form text field providing additional information about the organization. 
+
+Affiliation records (table Affiliations): 
+
+    userID, an integer-valued field referencing a User record 
+
+    orgID, an integer-valued field referencing an Org record 
+
+The presence of a (userID, orgID) pair encodes the existence of an active affiliation between the referenced user and organization. It is an error for such a pair of values to appear more than once in this table. Attempting to create such a duplicate will produce an SQL error, which will be converted by the REST interface into an HTTP error. The main purpose of this table is to enforce data access controls. 
+
+Tag technology records (table TagTech): 
+
+These records provide a description of the technical characteristics of a particular type of tag. Every tag record references exactly one record in this table, to identify its technical capabilities. The fields are: 
+
+    id, a unique integer-valued identifier 
+
+    name, a unique text-valued record identifier intended for human consumption 
+
+    manifest, a text field containing a free-form JSON-encoded description of a type of tag. There are no constraints on this field, other than the fact that it needs to be well-formed JSON. It may contain information such as manufacturer, model, data fields reported during scanning, their units, etc. 
+
+Antenna technology records (table AntennaTech) 
+
+    id, a unique integer-valued identifier 
+
+    name, a unique text-valued record identifier intended for human consumption 
+
+    manifest, a text field containing a free-form JSON-encoded description of a type of antenna. There are no constraints on this field, other than the fact that it needs to be well-formed JSON. It may contain information such as manufacturer, model, operating frequency, maximum scanning distance, etc. 
+
+Technology compatibility records (table TechCompat): 
+
+    antennaTechID, an integer-valued field referencing an AntennaTech record 
+
+    tagTechID, an integer-valued field referencing an TagTech record 
+
+The presence of a pair (antennaTechID, tagTechID) in this table expresses the fact that a particular type of antenna is capable of scanning tags of the given type, when they are in range. Any such pair may appear at most once in this table. Attempting to crate a duplicate record in this table will result in an SQL error which will be turned by the REST API into an HTTP error. 
+
+Species records (table Species): 
+
+    id, a unique integer-valued identifier for the species 
+
+    name, a unique text-valued identifier for the species (e.g., the scientific name of species), intended for human consumption. 
+
+Project records (table Projects): 
+
+    id, unique integer-valued project identifier. 
+
+    name, the name of project, text-valued field.  
+
+    ownerID, integer field that references the record in the Orgs table corresponding to the organization that has authority over the project. 
+
+    info, free-form text field for additional information about the project (e.g. points of contact) 
+
+Batch records (table Batches) 
+
+A batch represents a group of tags that have the same underlying technology, are part of the same project, were implanted in specimens of a single species, and have implantation data records of uniform structure and quality. 
+
+    id, unique integer-valued identifier for this batch 
+
+    tagTechID, reference to the TagTech record for the underlying technology of the tags in this batch  
+
+    speciesID, reference to the Species record for the species tagged using tags in this batch 
+
+    projectID,reference to the Project record representing project this batch belongs to. 
+
+    payloadSchema, a free-form text field containing a JSON description of the additional data that was recorded for each tag in this batch at implantation time. This is just a data schema, not the data itself. The actual data is stored in the payload field of each individual Tag record. 
+
+Network records (table Networks): 
+
+A network record represents a group of antennas that are owned by the same organization. 
+
+    id, unique integer-valued identifier for this netword 
+
+    ownerID, reference to the Org record representing the organization that owns this antenna network. 
+
+    name, a text -valued unique identifier for this network, intended for human use. 
+
+Antenna records (table Antennas) 
+
+    id, a unique integer-valued identifier for an antenna 
+
+    name, a unique text-valued identifier of an antenna, meant for human use. 
+
+    techID, a reference to the AntennaTech record describing the underlying technology of the antenna 
+
+    networkID: reference to the Network record describing the network this antenna belong to. 
+
+    startTime time when the antenna first became operational 
+
+    endTime time when the antenna was decommissioned (if it is null, then the antenna is still in use) 
+
+    latitude latitude of antenna location (stored as a float) 
+
+    longitude longitude of antenna location. (stored as a float) 
+
+    region the predefined geographic region in which the antenna is located. Consistency with latitude and longitude data is not checked. 
+
+Tag records (table Tags) 
+
+    id, a unique integer-valued identifier for the tag 
+
+    name unique text-valued identifier of the tag. This is the actual identifier the tag beams back when scanned (e.g., 8000E1349EA72A50). 
+
+    batchID: reference for the batch record this tag belongs to. 
+
+    time, date and time when the tag was deployed 
+
+    payload, free form JSON field containing additional information collected at implantation time (e.g., fish metadata, like { “fork length”: 110, “weight”: 112}). This field should conform to the schema declared in the payloadSchema field of the corresponding Batch record, although the system does not verify compliance. 
+
+Registration records (table Registrations) 
+
+    id, unique integer-valued identifier for the registration 
+
+    time, date and time of the registration 
+
+    antennaID reference to the Antenna record for the antenna that recorded the registration 
+
+    tagID reference to the Tag record of the scanned tag 
+
+    payload JSON encoded field containing any additional data reported by the tag. This should conform to the schema declared in the manifest field of the corresponding TagTech record, although conformance is not checked by the system. 
+
+Outage records (table  Outages) 
+
+    id unique integer identifier 
+
+    antennaID, reference to the Antenna record representing the antenna affected by this outage 
+
+    startTime: time when the outage began 
+
+    endTime: time when the outage ended (null if the outage is ongoing) 
+
+    info, free form text field containing additional information about the outage. 
+
+ 
+
+A schema of table relationships in the pilot database for the centralized PIT database for the Sacramento-San Joaquin Delta is shown in Figure 1. Ownership information is defined at the Batch and Network level, and propagated transitively to entries that reference those records 
