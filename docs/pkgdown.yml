@@ -3,6 +3,7 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   api_administration: api_administration.html
+  database: database.html
   telemetry_api: telemetry_api.html
-last_built: 2024-04-24T22:17Z
+last_built: 2024-04-26T19:40Z
 
