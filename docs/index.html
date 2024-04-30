@@ -77,7 +77,55 @@
 <div class="page-header"><h1 id="telemetry-package-for-r">Telemetry package for R<a class="anchor" aria-label="anchor" href="#telemetry-package-for-r"></a>
 </h1></div>
 <p><!-- badges: start --> <a href="https://github.com/fishsciences/telemetry/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/fishsciences/telemetry/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <!-- badges: end --></p>
-<p>A package for working with telemetry data, including crafting API requests to the telemetry database API.</p>
+<p>A package for crafting API requests to the telemetry database API.</p>
+<div class="section level2">
+<h2 id="package-design-and-philosophy">Package Design and Philosophy<a class="anchor" aria-label="anchor" href="#package-design-and-philosophy"></a>
+</h2>
+<p>The <code>telemetry</code> package is a utility for crafting valid API requests for the telemetry database from R. It handles:</p>
+<ul>
+<li>login and session management</li>
+<li>creating POST requests to the API</li>
+<li>converting input data from R into JSON data payloads,</li>
+<li>marshalling JSON responses from the API into R data structures.</li>
+</ul>
+<p>Importantly, the <code>telemetry</code> package is designed to be flexible while also providing moderate user convienence.</p>
+<div class="section level3">
+<h3 id="login-and-session-management">Login and Session Management<a class="anchor" aria-label="anchor" href="#login-and-session-management"></a>
+</h3>
+<p>A session for the API is started via the <code><a href="reference/start_session.html">start_session()</a></code> function,</p>
+<p><code>{r} my_session = start_session(uname = "My Name",                            pwd = "my_password",                            api_baseurl = "some_url")</code></p>
+<p>The returned object (<code>my_session</code> in this case) is an R list with identifying information about the newly created session, including base URL and the unique token assigned for this login. This unique token is required for every subsequent interaction with the API.</p>
+<p>Multiple sessions can be started simultaneously for the same user, as can multiple simultaneous sessions for different users. Each unique session is identified by the unique token for that session.</p>
+<p><em>A note on the <code>api_baseurl</code> parameter:</em> To be flexible, this can be any valid URL, include one local to the user’s machine (e.g. <code>localhost:</code>). The functions in the <code>telemetry</code> package will extract the URL from the session object to automatically submit requests to the URL for that session. This is useful in cases where e.g. you might want to test two sessions simultaenously, one for a locally running database API and another for a web-hosted API.</p>
+<p>By default, a single session’s unique token will be valid for 30 min. Each interaction with the API will refresh a token for another 30 min. A session can be ended manually via the <code><a href="reference/end_session.html">end_session()</a></code> function.</p>
+</div>
+<div class="section level3">
+<h3 id="downloading-data">Downloading Data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
+</h3>
+<p>Existing data in the database is downloaded via the <code><a href="reference/download_data.html">download_data()</a></code> function. This function takes two optional arguments, <code>region</code> and <code>speciesID</code>. If omitted, all data the user has access to will be downloaded, including registrations for tagID’s not in the database. When <code>region</code> is specified, only detections for antennas in the specified region are returned. When <code>speciesID</code> is provided, only tags of that species are returned. <em>Important</em> - tagIDs not in the database will have an unknown species, hence are not returned when <code>speciesID</code> is provided.</p>
+<p>The downloaded data takes the form of a complete SQLite database, subset according to the above. If the <code>db_file()</code> is not provided, this is saved to a <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile()</a></code>. The file path to the saved database is returned.</p>
+<p>For convenience, all tables from this SQLite database can be extracted into R <code>data.frames</code> with <code><a href="reference/extract_data.html">extract_data()</a></code> - by default these tables are extracted into a separate environment that is returned by the function</p>
+<p>```{r} fish_db = download_data(my_session, …)</p>
+<p>fish_data = extract_data(fish_db)</p>
+<pre><code>
+In this example, `fish_data` is an environment and the tables within
+can be accessed via the `$` operator.
+
+```{r}
+fish_data$Tags</code></pre>
+<p>Documentation on the database can be found <a href="https://fishsciences.github.io/telemetry/articles/database.html" class="external-link">here</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="sending-api-requests">Sending API Requests<a class="anchor" aria-label="anchor" href="#sending-api-requests"></a>
+</h3>
+<p>All API requests are submitted via the <code><a href="reference/send_api_request.html">send_api_request()</a></code> function. This function takes a session object and then a set of <code>key = value</code> pairs. These <code>key = value</code> pairs are marshalled to JSON in the format expected by the API. By design, the <code>telemetry</code> package mirrors the API itself. The keys must match the expected values for each API endpoint - any extra keys are ignored. The <code>values</code> must also match the expected data type for the API end point specified. In cases where the <code>value</code> is a complex data structure (e.g. a data.frame or array), it will be marshalled to JSON prior to submission.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="bug-reports">Bug Reports<a class="anchor" aria-label="anchor" href="#bug-reports"></a>
+</h2>
+<p>Please submit bug reports via github Issues.</p>
+</div>
 </div>
   </div>
 
