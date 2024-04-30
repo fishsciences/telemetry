@@ -101,3 +101,7 @@ match the expected data type for the API end point specified. In cases
 where the `value` is a complex data structure (e.g. a data.frame or
 array), it will be marshalled to JSON prior to submission.
 
+
+## Bug Reports
+
+Please submit bug reports via github Issues.
