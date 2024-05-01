@@ -25,6 +25,8 @@ There 14 different type of entities represented in the database:
   -    Technology compatibility records 
   -    Registration records 
 
+![The schema for the telemetry database](pitdb.schema_20240228.png)
+
 Most of these entity types represent exactly what their name suggests, but a few might require additional explanations, which we provide in this document. Each entity type corresponds to a table containing records of that type. 
 
 With two exceptions (i.e. affiliations and tech compatibility records), each of these tables contain an integer-valued column called id. This is a unique numeric identifier automatically assigned to a record by the database system when that record is created. These identifiers are used internally to reference the record from another table. They are of interest only to library writers. There is no reason to ever present them to the end user, although there is no harm in doing so. Figure 1 contains a diagram representing all the tables and the way they reference each other using these keys (represented as dotted lines). 
