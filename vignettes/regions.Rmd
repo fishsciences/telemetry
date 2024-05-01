@@ -7,4 +7,4 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-![Regions Map](regions_map_2.tiff)
+![Regions Map](regions_map.png)
