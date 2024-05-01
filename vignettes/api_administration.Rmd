@@ -108,7 +108,9 @@ Here, we will just add this user to an existing organization.
 First, we'll list the current organizations,
 
 ```{r, eval = FALSE}
-list_db_entry("orgs", session = a)
+send_api_request(session = a,
+                 end_point = "/api/list/orgs",
+                 unToken = a$unToken)
 ```
 ```
   orgID orgName                           orgInfo

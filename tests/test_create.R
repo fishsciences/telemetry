@@ -10,6 +10,15 @@ if(file.exists("toy_credentials.R")){
   list_endpoints()
   list_endpoint_variable("/api/admin/create/user")
 
+  # alternatives
+  send_api_request(a,
+                   end_point = "/api/list/users",
+                   unOID = 1,
+                   unToken = a$unToken)
+  send_api_request(a,
+                   end_point = "/api/list/users",
+                   unOID = 1)
+  
   list_db_entry("users", 1, a)
   list_db_entry("users", 2, a)
   list_db_entry("users", 3, a)

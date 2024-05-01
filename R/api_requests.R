@@ -51,8 +51,11 @@ send_api_request = function(session,
                             .curlOpts = list(),
                             simplify = grepl("list", end_point))
 {
-  
-  payload = create_payload(..., end_point)
+  if(!"unToken" %in% ...names()) {
+    payload = create_payload(..., unToken = token, end_pt = end_point)
+  } else {
+    payload = create_payload(..., end_pt = end_point)
+  }
   
   h = basicHeaderGatherer()
 
@@ -62,7 +65,8 @@ send_api_request = function(session,
                headerfunction = h$update,
                curl = curl_handle,
                .opts = .curlOpts)
-    # handle errors here
+
+  # handle errors here
   if(h$value()["status"] != "200")
     stop(h$value()["status"], ": ", h$value()["statusMessage"],
          "\n", rsp)

@@ -1,0 +1,10 @@
+---
+title: "Database Regions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Database Regions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+![Regions Map](regions_map_2.tiff)
