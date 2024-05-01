@@ -25,7 +25,10 @@
 ##' @param api_url character, the full URL to the endpoint
 ##' @param .curlOpts additional arguments passed to
 ##'   \code{RCurl::getURL()}
-##' @return json result
+##' @param simplify logical, whether the result should be coerced to a
+##'   data.frame. Most often useful for the /api/list/* endpoints
+##' @return json or data.frame result (depending on value of
+##'   \code{simplify}
 ##' @author Matt Espe
 ##' @export
 ##' @examples
@@ -45,7 +48,8 @@ send_api_request = function(session,
                             curl_handle = session$curl,
                             api_baseurl = session$base_url,
                             api_url = paste0(api_baseurl, end_point),
-                            .curlOpts = list())
+                            .curlOpts = list(),
+                            simplify = grepl("list", end_point))
 {
   
   payload = create_payload(..., end_point)
@@ -63,6 +67,9 @@ send_api_request = function(session,
     stop(h$value()["status"], ": ", h$value()["statusMessage"],
          "\n", rsp)
 
+  if(simplify)
+    return(as.data.frame(do.call(rbind, fromJSON(rsp))))
+    
   fromJSON(rsp)
 }
 

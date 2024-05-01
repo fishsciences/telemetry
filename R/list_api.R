@@ -17,13 +17,16 @@
 ##' @author Matt Espe
 ##' @export
 list_db_entry = function(entry, additionalID = NA,
-                         session, token = session$unToken,
+                         session,
+                         token = session$unToken,
                          curl_handle = session$curl,
                          api_baseurl = session$base_url,
                          end_point = "/api/list/",
                          api_url = paste0(api_baseurl, end_point),
                          ...)
 {
+  warning("list_db_entry() is deprecated. Please use send_api_request() instead.")
+  
   if(length(entry) > 1)
     stop("Please provide only one `entry` at a time.")
   
@@ -63,6 +66,32 @@ list_db_entry = function(entry, additionalID = NA,
   as.data.frame(do.call(rbind, fromJSON(rsp)))
 }
 
+##' A convenience function for returning the full endpoint name from a
+##' partial (short) name.
+##'
+##' @title Get Full Endpoint Name
+##' @param endpoint_shortname character, the short name to match
+##' @param endpoint_fullnames character vector, the full names of the
+##'   endpoints to match to
+##' @return character, the matched full name of the endpoint
+##' @author Matt Espe
+##' @export
+get_full_endpoint = function(endpoint_shortname,
+                             endpoint_fullnames = names(api_variable_names))
+{
+  # Escape 
+  sn = gsub("/", "\\\\/", endpoint_shortname)
+  i = grep(sn, endpoint_fullnames)
+  if(length(i) == 0)
+    stop("No endpoint matched from shortname!\n",
+         "Please check list of valid API endpoints")
+  
+  if(length(i) > 1)
+    warning("Multiple endpoints match `endpoint_shortname`\n",
+            "Please include additional path to narrow to a single endpoint")
+
+  endpoint_fullnames[i]
+}
 
 token_names = list(affiliations = "affReqTok",
                    batches = "batchReqTok",
