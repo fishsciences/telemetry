@@ -20,7 +20,7 @@ appropriate JSON payload to submit to the server."><!-- mathjax --><script src="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">telemetry</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.3</span>
       </span>
     </div>
 
@@ -74,7 +74,8 @@ appropriate JSON payload to submit to the server.</p>
 <span>  curl_handle <span class="op">=</span> <span class="va">session</span><span class="op">$</span><span class="va">curl</span>,</span>
 <span>  api_baseurl <span class="op">=</span> <span class="va">session</span><span class="op">$</span><span class="va">base_url</span>,</span>
 <span>  api_url <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">api_baseurl</span>, <span class="va">end_point</span><span class="op">)</span>,</span>
-<span>  .curlOpts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  .curlOpts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  simplify <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"list"</span>, <span class="va">end_point</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">api_upload_data</span><span class="op">(</span></span>
@@ -131,6 +132,11 @@ call.</p></dd>
 <code><a href="https://rdrr.io/pkg/RCurl/man/getURL.html" class="external-link">RCurl::getURL()</a></code></p></dd>
 
 
+<dt>simplify</dt>
+<dd><p>logical, whether the result should be coerced to a
+data.frame. Most often useful for the /api/list/* endpoints</p></dd>
+
+
 <dt>registration_data</dt>
 <dd><p>data.frame containing registration data
 to upload. Must have columns named "unAntName", "unTagName",
@@ -148,7 +154,11 @@ before the upload.</p></dd>
     <h2>Value</h2>
     
 
-<p>json result</p>
+<p>json or data.frame result (depending on value of</p>
+<p></p>
+<p><code>simplify</code></p>
+
+
     </div>
     <div id="details">
     <h2>Details</h2>
