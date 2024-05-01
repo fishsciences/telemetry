@@ -14,7 +14,8 @@ send_api_request(
   api_baseurl = session$base_url,
   api_url = paste0(api_baseurl, end_point),
   .curlOpts = list(),
-  simplify = grepl("list", end_point)
+  simplify = grepl("list", end_point),
+  confirm_delete = FALSE
 )
 
 api_upload_data(
@@ -55,6 +56,12 @@ call.}
 
 \item{simplify}{logical, whether the result should be coerced to a
 data.frame. Most often useful for the /api/list/* endpoints}
+
+\item{confirm_delete}{logical, confirm when the endpoint is one of
+/api/admin/delete/*. Defaults to FALSE, which will require
+interactive confirmation to proceed. For non-interactive
+sessions, this must be set to TRUE to complete a delete
+operation.}
 
 \item{registration_data}{data.frame containing registration data
 to upload. Must have columns named "unAntName", "unTagName",

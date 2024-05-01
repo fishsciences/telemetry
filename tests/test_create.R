@@ -17,7 +17,7 @@ if(file.exists("toy_credentials.R")){
                    unToken = a$unToken)
   send_api_request(a,
                    end_point = "/api/list/users",
-                   unOID = 1)
+                   unOID = 4)
   
   list_db_entry("users", 1, a)
   list_db_entry("users", 2, a)
@@ -51,7 +51,7 @@ if(file.exists("toy_credentials.R")){
   list_endpoint_variable("/api/admin/delete/user")
 
   send_api_request(a,
-                   unUID = 3,
+                   unUID = 10,
                    unToken = a$unToken,
                    end_point = "/api/admin/delete/user")
 

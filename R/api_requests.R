@@ -27,6 +27,11 @@
 ##'   \code{RCurl::getURL()}
 ##' @param simplify logical, whether the result should be coerced to a
 ##'   data.frame. Most often useful for the /api/list/* endpoints
+##' @param confirm_delete logical, confirm when the endpoint is one of
+##'   /api/admin/delete/*. Defaults to FALSE, which will require
+##'   interactive confirmation to proceed. For non-interactive
+##'   sessions, this must be set to TRUE to complete a delete
+##'   operation.
 ##' @return json or data.frame result (depending on value of
 ##'   \code{simplify}
 ##' @author Matt Espe
@@ -49,13 +54,26 @@ send_api_request = function(session,
                             api_baseurl = session$base_url,
                             api_url = paste0(api_baseurl, end_point),
                             .curlOpts = list(),
-                            simplify = grepl("list", end_point))
+                            simplify = grepl("list", end_point),
+                            confirm_delete = FALSE)
 {
+  if(length(end_point) != 1) stop("Please specify a single end_point")
+
+  if(grepl("delete", end_point) && !confirm_delete){
+    if(!interactive())
+      stop("To use a delete operation in a non-interactive session, please set `confirm_delete` to TRUE")
+    
+    cont = askYesNo("Delete operations require confirmation!\n This operation cannot be undone!\n Continue?",
+                    default = FALSE)
+    if(!isTRUE(cont)) stop("Delete operation canceled.")
+  }
+  
   if(!"unToken" %in% ...names()) {
     payload = create_payload(..., unToken = token, end_pt = end_point)
   } else {
     payload = create_payload(..., end_pt = end_point)
   }
+
   
   h = basicHeaderGatherer()
 
