@@ -2,11 +2,12 @@
 
 export(api_upload_data)
 export(check_variables)
-export(create_antData)
+export(create_antenna_data)
 export(create_payload)
 export(download_data)
 export(end_session)
 export(extract_data)
+export(get_full_endpoint)
 export(list_db_entry)
 export(list_endpoint_variable)
 export(list_endpoints)

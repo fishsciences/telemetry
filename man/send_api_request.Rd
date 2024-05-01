@@ -13,7 +13,8 @@ send_api_request(
   curl_handle = session$curl,
   api_baseurl = session$base_url,
   api_url = paste0(api_baseurl, end_point),
-  .curlOpts = list()
+  .curlOpts = list(),
+  simplify = grepl("list", end_point)
 )
 
 api_upload_data(
@@ -52,6 +53,9 @@ call.}
 \item{.curlOpts}{additional arguments passed to
 \code{RCurl::getURL()}}
 
+\item{simplify}{logical, whether the result should be coerced to a
+data.frame. Most often useful for the /api/list/* endpoints}
+
 \item{registration_data}{data.frame containing registration data
 to upload. Must have columns named "unAntName", "unTagName",
 "regDataTime"}
@@ -62,7 +66,8 @@ the "data" slot of the data payload. Will be marshalled to JSON
 before the upload.}
 }
 \value{
-json result
+json or data.frame result (depending on value of
+  \code{simplify}
 }
 \description{
 This is a flexible function for interacting with any of the

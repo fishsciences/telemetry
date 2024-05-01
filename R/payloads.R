@@ -148,8 +148,9 @@ create_payload = function(end_pt, ...)
          stop("Unknown end point"))
 }
 
-##' Creates a nested list from an data.frame to be suitable for
-##' submission to the API
+##' Creates a nested list from an data.frame of antennas to be
+##' suitable for submission to the API endpoint
+##' /api/admin/create/network.
 ##'
 ##' @title Create Antenna Data
 ##' @param df data.frame
@@ -157,10 +158,10 @@ create_payload = function(end_pt, ...)
 ##' @return nested list for conversion into JSON 
 ##' @author Matt Espe
 ##' @export
-create_antData = function(df,
-                          req_cols = c("unATID", "antDataEnd",
-                                       "unLat", "unLong", "unAntName",
-                                       "unRegion", "antDataStart"))
+create_antenna_data = function(df,
+                               req_cols = c("unATID", "antDataEnd",
+                                            "unLat", "unLong", "unAntName",
+                                            "unRegion", "antDataStart"))
 {
   
   if(!all(req_cols %in% colnames(df)))
