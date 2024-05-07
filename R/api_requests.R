@@ -1,8 +1,12 @@
 
 ##' This is a flexible function for interacting with any of the
-##' numerous /api/* endpoints. It functions by taking key
-##' = value pairs required for each of the endpoints and crafting the
-##' appropriate JSON payload to submit to the server.
+##' numerous /api/* endpoints. It functions by taking key = value
+##' pairs required for each of the endpoints and crafting the
+##' appropriate JSON payload to submit to the server. All end points
+##' require a "unToken" to authorize the request - if this is not
+##' provided in the key = value pairs, it will automatically be picked
+##' up from the "token" parameter, which defaults to the "unToken"
+##' element in the session object.
 ##'
 ##' There are some particularities around how the database expects
 ##' some elements to be created. See the vignette
@@ -15,7 +19,7 @@
 ##' @param ... key = value pairs of parameters for each end point
 ##'   request. These vary by endpoint. For a list of the required
 ##'   variables for each end point, use
-##'   \code{list_endpoint_variable()}
+##'   \code{list_endpoint_variable()}. See details for more information.
 ##' @param end_point chracter, the end point for the API
 ##' @param token character, the unToken for an active session
 ##' @param curl_handle an existing curl handle for an active
@@ -70,7 +74,7 @@ send_api_request = function(session,
   
   if(!"unToken" %in% ...names()) {
     payload = create_payload(..., unToken = token, end_pt = end_point)
-  } else {
+   }else {
     payload = create_payload(..., end_pt = end_point)
   }
 

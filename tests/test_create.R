@@ -15,9 +15,14 @@ if(file.exists("toy_credentials.R")){
                    end_point = "/api/list/users",
                    unOID = 1,
                    unToken = a$unToken)
+
   send_api_request(a,
                    end_point = "/api/list/users",
-                   unOID = 4)
+                   unOID = 4, simplify = FALSE)
+
+  send_api_request(a,
+                   end_point = "/api/list/affiliations",
+                   unUID = 10)
   
   list_db_entry("users", 1, a)
   list_db_entry("users", 2, a)
@@ -75,7 +80,7 @@ if(file.exists("toy_credentials.R")){
   list_db_entry("orgs", session = b)
 
   send_api_request(b,
-                   unUID = 4,
+                   unUID = 10,
                    unToken = b$unToken,
                    end_point = "/api/admin/delete/user")
 

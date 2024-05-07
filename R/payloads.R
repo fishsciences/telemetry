@@ -44,11 +44,10 @@ create_payload = function(end_pt, ...)
            tagDataTime = dots$tagDataTime)), 
            createBatchReqTok = c(unToken = dots$unToken)), 
          "/api/admin/create/network" = list(
-           createNetReqAnts = list(
-             dots$antData, # nested list
-             createNetReqName = c(unNetName = dots$unNetName), 
-             createNetReqOrg = c(unOID = dots$unOID),
-             createNetReqTok = c(unToken = dots$unToken))), 
+           createNetReqAnts = dots$antData, # nested list
+           createNetReqName = c(unNetName = dots$unNetName), 
+           createNetReqOrg = c(unOID = dots$unOID),
+           createNetReqTok = c(unToken = dots$unToken)), 
          "/api/admin/create/org" = list(
            createOrgInfo = dots$createOrgInfo,
            createOrgName = c(unOrgName = dots$unOrgName),

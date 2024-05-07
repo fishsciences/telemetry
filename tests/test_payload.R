@@ -21,3 +21,13 @@ assertError(telemetry:::check_data_types(list(unToken = 1)))
 
 assertError(check_variables(list(unOID = 1), "/api/admin/create/user"))
 check_variables(list(unToken = "a"), "api/list/orgs")
+
+## Test payloads
+
+dd = create_antenna_data(test_df[1:2,])
+x = create_payload("/api/admin/create/network",
+               antData = create_antenna_data(test_df[1:2,]),
+               unNetName = "test network",
+               unOID = 5,
+               unToken = "bob")
+cat(RJSONIO::toJSON(x))
