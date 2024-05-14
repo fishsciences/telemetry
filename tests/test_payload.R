@@ -31,3 +31,11 @@ x = create_payload("/api/admin/create/network",
                unOID = 5,
                unToken = "bob")
 cat(RJSONIO::toJSON(x))
+
+x = create_payload("/api/admin/create/tech/tag",
+                   dataFields = c("c", "b"),
+                   dataUnits = c("c", "b"),
+                   info = "c",
+                   unTTName = "c",
+                   unToken = "c")
+cat(RJSONIO::toJSON(x))

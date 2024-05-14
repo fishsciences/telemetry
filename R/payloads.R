@@ -75,11 +75,11 @@ create_payload = function(end_pt, ...)
            createTechCompToken = c(unToken = dots$unToken)), 
          "/api/admin/create/tech/tag" = list(
            createTagTechMan = list(
-             unTTMan = list(dataFields = dots$dataFields,
-                            dataUnits = dots$dataUnits, 
-                            info = dots$info),
+             unTTMan = list(dataFields = c(dots$dataFields),
+                            dataUnits = c(dots$dataUnits), 
+                            info = dots$info)),
              createTagTechName = c(unTTName = dots$unTTName), 
-             createTagTechToken = c(unToken = dots$unToken))), 
+             createTagTechToken = c(unToken = dots$unToken)), 
          "/api/admin/create/user" = list(
            createUserInfo = dots$createUserInfo, 
            createUserName = c(unUserName = dots$unUserName),
