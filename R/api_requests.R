@@ -12,6 +12,11 @@
 ##' some elements to be created. See the vignette
 ##' "Telemetry API Administration" for details.
 ##'
+##'
+##' For /api/create/network and /api/create/batch, the antenna and tag
+##' data must first be coerced into the proper format (a nested list) via
+##' \code{create_antenna_data()} and \code{create_batch_tag_data()},
+##' respectively.
 ##' 
 ##' @title Send Database API request
 ##' @param session list, and active session object created by

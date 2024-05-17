@@ -1,6 +1,11 @@
 ##' This function creates a nested list in the correct structure to be
 ##' converted to JSON and delivered to the API
 ##'
+##' For /api/create/network and /api/create/batch, the antenna and tag
+##' data must first be coerced into the proper format via
+##' \code{create_antenna_data()} and \code{create_batch_tag_data()},
+##' respectively.
+##'
 ##' @title Create API Data Payload
 ##' @param end_pt character, the name of the API end point to create a payload for
 ##' @param ... key = value pairs for creating the JSON payload
@@ -20,9 +25,9 @@ create_payload = function(end_pt, ...)
     if(!inherits(dots$batchDataSchema, "data.frame") ||
          !all(colnames(dots$batchDataSchema) %in% c("fields", "units")))
       stop("`batchDataSchema` must be a data.frame with two columns named 'fields' and 'units'")
-    if(!inherits(dots$tagDataPayload, "data.frame") ||
-         !all(colnames(dots$tagDataPayload) %in% dots$batchDataSchema$fields))
-      stop("Provided `batchDataSchema$fields` and `tagDataPayload` do not match")
+    ## if(!inherits(dots$tagDataPayload, "data.frame") ||
+         ## !all(colnames(dots$tagDataPayload) %in% dots$batchDataSchema$fields))
+      ## stop("Provided `batchDataSchema$fields` and `tagDataPayload` do not match")
   }
   
   ## Pulled out of the docs.md programmatically and then edited by
@@ -34,14 +39,11 @@ create_payload = function(end_pt, ...)
            createAffUID = c(unUID = dots$unUID)),
          "/api/admin/create/batch" = list(
            createBatchReqData = list(
-             batchDataProject = c(unProjectID = dots$UnProjectID), 
+             batchDataProject = c(unProjectID = dots$unProjectID), 
              batchDataSchema = dots$batchDataSchema, # data.frame
              batchDataSpecies = c(unSpecID = dots$unSpecID), 
              batchDataTech = c(unTTID = dots$unTTID)),
-           createBatchReqTags = list(
-             list(tagDataName = c(unTagName = dots$unTagName), 
-           tagDataPayload = dots$tagDataPayload, # data.frame
-           tagDataTime = dots$tagDataTime)), 
+           createBatchReqTags = dots$createBatchReqTags, # nested list 
            createBatchReqTok = c(unToken = dots$unToken)), 
          "/api/admin/create/network" = list(
            createNetReqAnts = dots$antData, # nested list
@@ -181,6 +183,33 @@ create_one_ant = function(df)
        antDataName = c(unAntName = df$unAntName),
        antDataRegi = c(unRegion = df$unRegion), 
        antDataStart = df$antDataStart)
+}
+
+##' @param payload_cols character vector, the column names of data to
+##'   include in the data payload. These should match the values
+##'   provided to the batchDataSchema fields.
+##' @rdname create_antenna_data
+##' @export
+create_batch_tag_data = function(df,
+                                 payload_cols, 
+                                 req_cols = c("unTagName", "tagDataTime"))
+{
+  
+  if(!all(req_cols %in% colnames(df)))
+    stop("Missing columns in data.frame: ",
+         paste(setdiff(req_cols,
+                       colnames(df)), collapse = ", "))
+  
+  ## Check the df here for data types?
+  lapply(seq(nrow(df)), function(i) create_one_tag(df[i,], payload_cols))
+}
+
+create_one_tag = function(df, payload_cols)
+{
+  list(tagDataName = c(unTagName = df$unTagName),
+       tagDataPayload = df[,payload_cols],
+       tagDataTime = df$tagDataTime)
+
 }
 
 

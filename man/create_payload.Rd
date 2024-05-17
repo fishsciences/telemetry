@@ -18,6 +18,12 @@ list
 This function creates a nested list in the correct structure to be
 converted to JSON and delivered to the API
 }
+\details{
+For /api/create/network and /api/create/batch, the antenna and tag
+data must first be coerced into the proper format via
+\code{create_antenna_data()} and \code{create_batch_tag_data()},
+respectively.
+}
 \author{
 Matt Espe
 }

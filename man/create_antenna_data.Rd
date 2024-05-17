@@ -2,6 +2,7 @@
 % Please edit documentation in R/payloads.R
 \name{create_antenna_data}
 \alias{create_antenna_data}
+\alias{create_batch_tag_data}
 \title{Create Antenna Data}
 \usage{
 create_antenna_data(
@@ -9,11 +10,21 @@ create_antenna_data(
   req_cols = c("unATID", "antDataEnd", "unLat", "unLong", "unAntName", "unRegion",
     "antDataStart")
 )
+
+create_batch_tag_data(
+  df,
+  payload_cols,
+  req_cols = c("unTagName", "tagDataTime")
+)
 }
 \arguments{
 \item{df}{data.frame}
 
 \item{req_cols}{character vector, the names of the columns required to be in the df}
+
+\item{payload_cols}{character vector, the column names of data to
+include in the data payload. These should match the values
+provided to the batchDataSchema fields.}
 }
 \value{
 nested list for conversion into JSON

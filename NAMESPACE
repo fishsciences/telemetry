@@ -3,6 +3,7 @@
 export(api_upload_data)
 export(check_variables)
 export(create_antenna_data)
+export(create_batch_tag_data)
 export(create_payload)
 export(download_data)
 export(end_session)

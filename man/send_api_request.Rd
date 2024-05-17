@@ -37,7 +37,7 @@ api_upload_data(
 \item{...}{key = value pairs of parameters for each end point
 request. These vary by endpoint. For a list of the required
 variables for each end point, use
-\code{list_endpoint_variable()}}
+\code{list_endpoint_variable()}. See details for more information.}
 
 \item{end_point}{chracter, the end point for the API}
 
@@ -78,14 +78,24 @@ json or data.frame result (depending on value of
 }
 \description{
 This is a flexible function for interacting with any of the
-numerous /api/* endpoints. It functions by taking key
-= value pairs required for each of the endpoints and crafting the
-appropriate JSON payload to submit to the server.
+numerous /api/* endpoints. It functions by taking key = value
+pairs required for each of the endpoints and crafting the
+appropriate JSON payload to submit to the server. All end points
+require a "unToken" to authorize the request - if this is not
+provided in the key = value pairs, it will automatically be picked
+up from the "token" parameter, which defaults to the "unToken"
+element in the session object.
 }
 \details{
 There are some particularities around how the database expects
 some elements to be created. See the vignette
 "Telemetry API Administration" for details.
+
+
+For /api/create/network and /api/create/batch, the antenna and tag
+data must first be coerced into the proper format (a nested list) via
+\code{create_antenna_data()} and \code{create_batch_tag_data()},
+respectively.
 }
 \examples{
 \dontrun{

@@ -39,3 +39,24 @@ x = create_payload("/api/admin/create/tech/tag",
                    unTTName = "c",
                    unToken = "c")
 cat(RJSONIO::toJSON(x))
+
+
+test_df = data.frame(unTagName = c("a", "b"),
+                     length = c(1,2),
+                     tagDataTime = Sys.time())
+
+x = create_batch_tag_data(test_df, "length")
+
+cat(RJSONIO::toJSON(x))
+
+x = create_payload("/api/admin/create/batch",
+                   unProjectID = 1,
+                   batchDataSchema = data.frame(fields = "length",
+                                                units = "cm"),
+                   unSpecID = 1,
+                   unTTID = 1,
+                   createBatchReqTags = create_batch_tag_data(test_df,
+                                                              payload_cols = "length"),
+                   unToken = "bob")
+
+cat(RJSONIO::toJSON(x))
