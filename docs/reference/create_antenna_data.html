@@ -19,7 +19,7 @@ suitable for submission to the API endpoint
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">telemetry</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.3</span>
       </span>
     </div>
 
@@ -74,6 +74,12 @@ suitable for submission to the API endpoint
 <span>  <span class="va">df</span>,</span>
 <span>  req_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unATID"</span>, <span class="st">"antDataEnd"</span>, <span class="st">"unLat"</span>, <span class="st">"unLong"</span>, <span class="st">"unAntName"</span>, <span class="st">"unRegion"</span>,</span>
 <span>    <span class="st">"antDataStart"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">create_batch_tag_data</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">payload_cols</span>,</span>
+<span>  req_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unTagName"</span>, <span class="st">"tagDataTime"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -85,6 +91,12 @@ suitable for submission to the API endpoint
 
 <dt>req_cols</dt>
 <dd><p>character vector, the names of the columns required to be in the df</p></dd>
+
+
+<dt>payload_cols</dt>
+<dd><p>character vector, the column names of data to
+include in the data payload. These should match the values
+provided to the batchDataSchema fields.</p></dd>
 
 </dl></div>
     <div id="value">
