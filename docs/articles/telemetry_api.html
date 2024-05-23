@@ -95,17 +95,8 @@
 <div class="section level2">
 <h2 id="establishing-a-session">Establishing a Session<a class="anchor" aria-label="anchor" href="#establishing-a-session"></a>
 </h2>
-<p>In order to start interacting with the API server, you must first
-establish a session using a pre-established set of login credentials
-(Username and Password). It is best practice to avoid storing these in
-files which are easily shared with others either directly or indirectly
-(e.g. an accidental git commit). Please note, this includes .Rhistory
-files (which store console commands). Therefore, you want to use the
-password in a way that defines it without ever printing it in your
-script or R console.</p>
-<p>A simple way to enact this is to stored login credentials in a file
-that is separate from the analysis script, and is ignored by git in a
-.gitignore file:</p>
+<p>In order to start interacting with the API server, you must first establish a session using a pre-established set of login credentials (Username and Password). It is best practice to avoid storing these in files which are easily shared with others either directly or indirectly (e.g. an accidental git commit). Please note, this includes .Rhistory files (which store console commands). Therefore, you want to use the password in a way that defines it without ever printing it in your script or R console.</p>
+<p>A simple way to enact this is to stored login credentials in a file that is separate from the analysis script, and is ignored by git in a .gitignore file:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Defines api_url, usr, and pwd</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"api_credentials.R"</span>, echo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -113,67 +104,38 @@ that is separate from the analysis script, and is ignored by git in a
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">telemetry</span><span class="op">)</span></span>
 <span><span class="va">my_session</span> <span class="op">=</span> <span class="fu"><a href="../reference/start_session.html">start_session</a></span><span class="op">(</span><span class="va">usr</span>, <span class="va">pwd</span>, <span class="va">api_url</span><span class="op">)</span></span></code></pre></div>
-<p>The returned object stores all the information about the session that
-was just established, including the user who started the session, the
-URL of the database server, the time the session was started (as the
-session will timeout after some time), a curl handle for the session,
-and a unique token for the server to identify the session. This object
-is then passed into subsequent functions, simplifying the process of
-interacting with the server.</p>
+<p>The returned object stores all the information about the session that was just established, including the user who started the session, the URL of the database server, the time the session was started (as the session will timeout after some time), a curl handle for the session, and a unique token for the server to identify the session. This object is then passed into subsequent functions, simplifying the process of interacting with the server.</p>
 </div>
 <div class="section level2">
 <h2 id="downloading-data">Downloading data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
 </h2>
-<p>To download the data associated with an individual user, we use the
-<code><a href="../reference/download_data.html">download_data()</a></code> function. This takes a session object
-created above, as well as a region and speciesID to download data for.
-It will download a SQLite3 database which is a subset of that the user
-has access to. By default, this is stored in a temporary file (which is
-deleted when the user’s computer is restarted), but we can also specifiy
-a location to keep a persistent copy:</p>
+<p>To download the data associated with an individual user, we use the <code><a href="../reference/download_data.html">download_data()</a></code> function. This takes a session object created above, as well as a region and speciesID to download data for. It will download a SQLite3 database which is a subset of that the user has access to. By default, this is stored in a temporary file (which is deleted when the user’s computer is restarted), but we can also specifiy a location to keep a persistent copy:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/download_data.html">download_data</a></span><span class="op">(</span><span class="va">my_session</span>, region <span class="op">=</span> <span class="fl">1</span>, speciesID <span class="op">=</span> <span class="fl">1</span>, db_file <span class="op">=</span> <span class="st">"my.db"</span><span class="op">)</span></span></code></pre></div>
-<p>This stores the database in the file called <code>my.db</code> in the
-current working directory.</p>
-<p>Both <code>speciesID</code> and <code>region</code> are optional. If
-both are omitted, the entire dataset the user has access to will be
-returned.</p>
-<p>Of note when selecting by species: Only tags that are registered in
-the database will have a species associated with them. This means that a
-query by species ID will return only registered tags.</p>
-<p>We can extract data from this database with the function
-<code><a href="../reference/extract_data.html">extract_data()</a></code></p>
+<p>This stores the database in the file called <code>my.db</code> in the current working directory.</p>
+<p>Both <code>speciesID</code> and <code>region</code> are optional. If both are omitted, the entire dataset the user has access to will be returned.</p>
+<p>Of note when selecting by species: Only tags that are registered in the database will have a species associated with them. This means that a query by species ID will return only registered tags.</p>
+<p>We can extract data from this database with the function <code><a href="../reference/extract_data.html">extract_data()</a></code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tele_data</span> <span class="op">=</span> <span class="fu"><a href="../reference/extract_data.html">extract_data</a></span><span class="op">(</span><span class="st">"my.db"</span><span class="op">)</span></span></code></pre></div>
-<p>This creates a new environment (a list like object), which contains
-all of the tables from the specified database file.</p>
+<p>This creates a new environment (a list like object), which contains all of the tables from the specified database file.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tele_data</span><span class="op">$</span><span class="va">Tags</span> <span class="co">## a data.frame of the Tags table</span></span></code></pre></div>
-<p>Alternatively, we can assign the tables directly into our Global
-environment, but this is potentially dangerous - it will overwrite any
-existing objects with similar names as the tables in the database. Only
-do this if you are sure you don’t have objects in your environment with
-the same names, or do not mind losing those objects.</p>
+<p>Alternatively, we can assign the tables directly into our Global environment, but this is potentially dangerous - it will overwrite any existing objects with similar names as the tables in the database. Only do this if you are sure you don’t have objects in your environment with the same names, or do not mind losing those objects.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/extract_data.html">extract_data</a></span><span class="op">(</span><span class="st">"my.db"</span>, env <span class="op">=</span> <span class="va">.GlobalEnv</span><span class="op">)</span> <span class="co"># Potentially dangerous!!</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="listing-entries">Listing entries<a class="anchor" aria-label="anchor" href="#listing-entries"></a>
 </h2>
-<p>When we want to see what the available entries for a certain category
-are, e.g. species ID, we use the <code><a href="../reference/list_db_entry.html">list_db_entry()</a></code> function.
-This function takes the name of the entry category, and returns a
-<code>data.frame</code> of the respective entries. It requires an active
-session.</p>
+<p>When we want to see what the available entries for a certain category are, e.g. species ID, we use the <code><a href="../reference/list_db_entry.html">list_db_entry()</a></code> function. This function takes the name of the entry category, and returns a <code>data.frame</code> of the respective entries. It requires an active session.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/list_db_entry.html">list_db_entry</a></span><span class="op">(</span><span class="st">"species"</span>, session <span class="op">=</span> <span class="va">my_session</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="ending-a-session">Ending a session<a class="anchor" aria-label="anchor" href="#ending-a-session"></a>
 </h2>
-<p>Once we are done with our interactions with the database, we should
-close out our session. We can do this with
-<code><a href="../reference/end_session.html">end_session()</a></code></p>
+<p>Once we are done with our interactions with the database, we should close out our session. We can do this with <code><a href="../reference/end_session.html">end_session()</a></code></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/end_session.html">end_session</a></span><span class="op">(</span><span class="va">my_session</span><span class="op">)</span></span></code></pre></div>
 </div>

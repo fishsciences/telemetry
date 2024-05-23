@@ -94,37 +94,15 @@
 <div class="section level2">
 <h2 id="overview-of-the-send_api_request-function">Overview of the <code>send_api_request()</code> function<a class="anchor" aria-label="anchor" href="#overview-of-the-send_api_request-function"></a>
 </h2>
-<p>Most interactions with the database are performed via the
-<code><a href="../reference/send_api_request.html">send_api_request()</a></code> function. This function helps the R user
-create valid API requests and submits them to the API. Since most
-interactions will happen via this function, it is worth understanding
-how this functions works.</p>
-<p>First, the <code><a href="../reference/send_api_request.html">send_api_request()</a></code> function is a flexible
-function for submitting <em>most</em> API requests via a single
-interface. In order to achieve this flexibility, the function takes an
-active session object created via <code><a href="../reference/start_session.html">start_session()</a></code>, an
-endpoint to submit the request to (one of the options as listed by
-<code><a href="../reference/check_variables.html">list_endpoints()</a></code>), and then a set of
-<code>key = value</code> pairs required by the endpoint specified as
-additional arguments to the function (see case study below for
-example).</p>
-<p>The required <code>key = value</code> pairs are different for each
-endpoint, yet the mechanism for submitting them is similar in any case.
-For example, if the endpoint requires the variable “unTagName”, this can
-be provided to <code><a href="../reference/send_api_request.html">send_api_request()</a></code> like</p>
+<p>Most interactions with the database are performed via the <code><a href="../reference/send_api_request.html">send_api_request()</a></code> function. This function helps the R user create valid API requests and submits them to the API. Since most interactions will happen via this function, it is worth understanding how this functions works.</p>
+<p>First, the <code><a href="../reference/send_api_request.html">send_api_request()</a></code> function is a flexible function for submitting <em>most</em> API requests via a single interface. In order to achieve this flexibility, the function takes an active session object created via <code><a href="../reference/start_session.html">start_session()</a></code>, an endpoint to submit the request to (one of the options as listed by <code><a href="../reference/check_variables.html">list_endpoints()</a></code>), and then a set of <code>key = value</code> pairs required by the endpoint specified as additional arguments to the function (see case study below for example).</p>
+<p>The required <code>key = value</code> pairs are different for each endpoint, yet the mechanism for submitting them is similar in any case. For example, if the endpoint requires the variable “unTagName”, this can be provided to <code><a href="../reference/send_api_request.html">send_api_request()</a></code> like</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/send_api_request.html">send_api_request</a></span><span class="op">(</span>session <span class="op">=</span> <span class="va">my_session</span>,</span>
 <span>                 unTagName <span class="op">=</span> <span class="st">"some_tag_name"</span>,</span>
 <span>                 end_point <span class="op">=</span> <span class="st">"/api/some/endpoint"</span><span class="op">)</span></span></code></pre></div>
-<p>There are two important details to remember about the keys: 1) the
-key must match the appropriate required keys for each end-point exactly
-(keys are case-sensitive), and 2) all keys for a given endpoint must be
-supplied.</p>
-<p>As each end-point has different required keys that can be difficult
-to remember and keep straight, there is a convenience function to list
-the required variables for a particular end-point. For example, to list
-the required variables for the <code>/api/admin/create/user</code>
-endpoint</p>
+<p>There are two important details to remember about the keys: 1) the key must match the appropriate required keys for each end-point exactly (keys are case-sensitive), and 2) all keys for a given endpoint must be supplied.</p>
+<p>As each end-point has different required keys that can be difficult to remember and keep straight, there is a convenience function to list the required variables for a particular end-point. For example, to list the required variables for the <code>/api/admin/create/user</code> endpoint</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_variables.html">list_endpoint_variable</a></span><span class="op">(</span><span class="st">"/api/admin/create/user"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $`/api/admin/create/user`</span></span>
@@ -132,33 +110,22 @@ endpoint</p>
 <div class="section level3">
 <h3 id="case-study-creating-new-user-entry">Case Study: Creating New User Entry<a class="anchor" aria-label="anchor" href="#case-study-creating-new-user-entry"></a>
 </h3>
-<p>Creating a new entries for users is done via the
-<code><a href="../reference/send_api_request.html">send_api_request()</a></code> function. The general use of the
-<code><a href="../reference/send_api_request.html">send_api_request()</a></code> function is to provide a session for an
-existing user, and then list the required variables for the entry using
-<code>key = value</code> entries separated by commas.</p>
+<p>Creating a new entries for users is done via the <code><a href="../reference/send_api_request.html">send_api_request()</a></code> function. The general use of the <code><a href="../reference/send_api_request.html">send_api_request()</a></code> function is to provide a session for an existing user, and then list the required variables for the entry using <code>key = value</code> entries separated by commas.</p>
 <div class="section level4">
 <h4 id="finding-required-variables-to-include">Finding required variables to include<a class="anchor" aria-label="anchor" href="#finding-required-variables-to-include"></a>
 </h4>
-<p>First, we will check the required keys for the
-<code>/api/admin/create/user</code> endpoint</p>
+<p>First, we will check the required keys for the <code>/api/admin/create/user</code> endpoint</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_variables.html">list_endpoint_variable</a></span><span class="op">(</span><span class="st">"/api/admin/create/user"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $`/api/admin/create/user`</span></span>
 <span><span class="co">## [1] "createUserInfo" "unUserName"     "createUserPass" "unToken"</span></span></code></pre>
-<p>This shows that we need to provide 4 values for this request;
-“createUserInfo”, “unUserName”, “createUserPass”, and “unToken”.</p>
+<p>This shows that we need to provide 4 values for this request; “createUserInfo”, “unUserName”, “createUserPass”, and “unToken”.</p>
 </div>
 <div class="section level4">
 <h4 id="creating-a-new-user">Creating a New User<a class="anchor" aria-label="anchor" href="#creating-a-new-user"></a>
 </h4>
-<p><em>NOTE: Creating a new user must be done from an existing user with
-adequate permissions. Thus, the “unToken” provided is for an existing
-session for an existing user.</em></p>
-<p>To create a new user, we must provide <code>createUserInfo</code>,
-<code>unUserName</code>, <code>createUserPass</code>, and the
-<code>unToken</code> for an already authorized user’s login session
-(i.e. a session object created via <code><a href="../reference/start_session.html">start_session()</a></code>)..</p>
+<p><em>NOTE: Creating a new user must be done from an existing user with adequate permissions. Thus, the “unToken” provided is for an existing session for an existing user.</em></p>
+<p>To create a new user, we must provide <code>createUserInfo</code>, <code>unUserName</code>, <code>createUserPass</code>, and the <code>unToken</code> for an already authorized user’s login session (i.e. a session object created via <code><a href="../reference/start_session.html">start_session()</a></code>)..</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/send_api_request.html">send_api_request</a></span><span class="op">(</span><span class="va">my_session</span>,</span>
 <span>                 createUserInfo <span class="op">=</span> <span class="st">"nothing here"</span>,</span>
@@ -166,16 +133,12 @@ session for an existing user.</em></p>
 <span>                 createUserPass <span class="op">=</span> <span class="st">"qwerty"</span>,</span>
 <span>                 unToken <span class="op">=</span> <span class="va">my_session</span><span class="op">$</span><span class="va">unToken</span>,</span>
 <span>                 end_point <span class="op">=</span> <span class="st">"/api/admin/create/user"</span><span class="op">)</span></span></code></pre></div>
-<p>This will create a new user named “Matt” in the database. However,
-this new user is not affiliated with any organization and hence will
-only have access to data that is not registered to an organization.</p>
+<p>This will create a new user named “Matt” in the database. However, this new user is not affiliated with any organization and hence will only have access to data that is not registered to an organization.</p>
 </div>
 <div class="section level4">
 <h4 id="adding-a-new-user-to-an-organization">Adding a New User to an Organization<a class="anchor" aria-label="anchor" href="#adding-a-new-user-to-an-organization"></a>
 </h4>
-<p>We need to either affiliate this new user with an existing
-organization, or we need to create a new organization and then affiliate
-the new user with the new organization.</p>
+<p>We need to either affiliate this new user with an existing organization, or we need to create a new organization and then affiliate the new user with the new organization.</p>
 <p>Here, we will just add this user to an existing organization.</p>
 <p>First, we’ll list the current organizations,</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -185,19 +148,14 @@ the new user with the new organization.</p>
 <pre><code>  orgID orgName                           orgInfo
 1     1    PITA                PIT Administration
 2     2    NATO North Atlantic Trout Organization</code></pre>
-<p>We would like to add “Matt” to the organization 2. We can do that
-with another call to <code><a href="../reference/send_api_request.html">send_api_request()</a></code>, but now with the
-correct variables for the <code>/api/admin/create/affiliation</code>
-endpoint (“unOID”, “unUID”, and “unToken”).</p>
+<p>We would like to add “Matt” to the organization 2. We can do that with another call to <code><a href="../reference/send_api_request.html">send_api_request()</a></code>, but now with the correct variables for the <code>/api/admin/create/affiliation</code> endpoint (“unOID”, “unUID”, and “unToken”).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/send_api_request.html">send_api_request</a></span><span class="op">(</span><span class="va">my_session</span>,</span>
 <span>                 unOID <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                 unUID <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>                 unToken <span class="op">=</span> <span class="va">my_session</span><span class="op">$</span><span class="va">unToken</span>,</span>
 <span>                 end_point <span class="op">=</span> <span class="st">"/api/admin/create/affiliation"</span><span class="op">)</span></span></code></pre></div>
-<p>This adds “Matt” as a user affiliated with the “NATO” organization.
-We can check this by listing the users associated with organization 2
-using the <code><a href="../reference/list_db_entry.html">list_db_entry()</a></code> function</p>
+<p>This adds “Matt” as a user affiliated with the “NATO” organization. We can check this by listing the users associated with organization 2 using the <code><a href="../reference/list_db_entry.html">list_db_entry()</a></code> function</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/list_db_entry.html">list_db_entry</a></span><span class="op">(</span><span class="st">"users"</span>, <span class="fl">2</span>, <span class="va">my_session</span><span class="op">)</span></span></code></pre></div>
 <pre><code>  userDataID userDataName                                  userDataInfo
@@ -208,39 +166,17 @@ using the <code><a href="../reference/list_db_entry.html">list_db_entry()</a></c
 <div class="section level3">
 <h3 id="registration-data-upload">Registration Data Upload<a class="anchor" aria-label="anchor" href="#registration-data-upload"></a>
 </h3>
-<p>There are a few particularities to be aware of when uploading new
-registration data to the database.</p>
-<p>First, the registrations must be for an antenna already entered into
-the database (i.e. one that is listed by
-<code>list_db_entry("antenna")</code>). If the antenna is not already in
-the database, it must be added prior to uploading the registration
-data.</p>
-<p>Second, the registrations should be organized into a
-<code>data.frame</code> with columns named “unAntName” (the unique
-antenna name), “unTagName” (the unique tag name), and “regDataTime” (a
-POSIX timestamp for the registration, including the timezone).
-Additional columns can be appended to the data via the
-<code>data_cols</code> argument - a vector of the column names of
-additional columns to be included in the “payload” slot of the
-registrations table. These additional columns will be marshalled to JSON
-before being stored in the “payload” slot.</p>
-<p>Once the registrations have been prepared according to the above
-requirements, it can be uploaded to the database with
-<code><a href="../reference/send_api_request.html">api_upload_data()</a></code>. As with all the other API functions, it
-requires an active session.</p>
+<p>There are a few particularities to be aware of when uploading new registration data to the database.</p>
+<p>First, the registrations must be for an antenna already entered into the database (i.e. one that is listed by <code>list_db_entry("antenna")</code>). If the antenna is not already in the database, it must be added prior to uploading the registration data.</p>
+<p>Second, the registrations should be organized into a <code>data.frame</code> with columns named “unAntName” (the unique antenna name), “unTagName” (the unique tag name), and “regDataTime” (a POSIX timestamp for the registration, including the timezone). Additional columns can be appended to the data via the <code>data_cols</code> argument - a vector of the column names of additional columns to be included in the “payload” slot of the registrations table. These additional columns will be marshalled to JSON before being stored in the “payload” slot.</p>
+<p>Once the registrations have been prepared according to the above requirements, it can be uploaded to the database with <code><a href="../reference/send_api_request.html">api_upload_data()</a></code>. As with all the other API functions, it requires an active session.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/send_api_request.html">api_upload_data</a></span><span class="op">(</span>session <span class="op">=</span> <span class="va">my_session</span>,</span>
 <span>                registration_data <span class="op">=</span> <span class="va">new_registration_df</span>,</span>
 <span>                other_data_column_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"temperature"</span>, <span class="st">"turbidity"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>It is worth noting that any tag names can be included in the
-registrations, including ones not listed in the “Tags” table. On upload,
-if another organization has claimed ownership of a tag ID, the new
-registration data associated with that tag will automatically become
-associated with that organization.</p>
-<p><strong>Q: Is this weird? This means the uploading organization might
-not be able to see the data they just uploaded.</strong></p>
-<p><strong>Q: Is there any way to resolve tag collisions? (two distinct
-tags with the same tag name)</strong></p>
+<p>It is worth noting that any tag names can be included in the registrations, including ones not listed in the “Tags” table. On upload, if another organization has claimed ownership of a tag ID, the new registration data associated with that tag will automatically become associated with that organization.</p>
+<p><strong>Q: Is this weird? This means the uploading organization might not be able to see the data they just uploaded.</strong></p>
+<p><strong>Q: Is there any way to resolve tag collisions? (two distinct tags with the same tag name)</strong></p>
 </div>
 </div>
   </div>

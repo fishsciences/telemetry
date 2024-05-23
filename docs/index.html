@@ -99,7 +99,9 @@
 <h3 id="login-and-session-management">Login and Session Management<a class="anchor" aria-label="anchor" href="#login-and-session-management"></a>
 </h3>
 <p>A session for the API is started via the <code><a href="reference/start_session.html">start_session()</a></code> function,</p>
-<p><code>{r} my_session = start_session(uname = "My Name",                            pwd = "my_password",                            api_baseurl = "some_url")</code></p>
+<pre class="{r}"><code><span><span class="va">my_session</span> <span class="op">=</span> <span class="fu"><a href="reference/start_session.html">start_session</a></span><span class="op">(</span>uname <span class="op">=</span> <span class="st">"My Name"</span>,</span>
+<span>                           pwd <span class="op">=</span> <span class="st">"my_password"</span>,</span>
+<span>                           api_baseurl <span class="op">=</span> <span class="st">"some_url"</span><span class="op">)</span></span></code></pre>
 <p>The returned object (<code>my_session</code> in this case) is an R list with identifying information about the newly created session, including base URL and the unique token assigned for this login. This unique token is required for every subsequent interaction with the API.</p>
 <p>Multiple sessions can be started simultaneously for the same user, as can multiple simultaneous sessions for different users. Each unique session is identified by the unique token for that session.</p>
 <p><em>A note on the <code>api_baseurl</code> parameter:</em> To be flexible, this can be any valid URL, include one local to the user’s machine (e.g. <code>localhost:</code>). The functions in the <code>telemetry</code> package will extract the URL from the session object to automatically submit requests to the URL for that session. This is useful in cases where e.g. you might want to test two sessions simultaenously, one for a locally running database API and another for a web-hosted API.</p>
@@ -111,14 +113,11 @@
 <p>Existing data in the database is downloaded via the <code><a href="reference/download_data.html">download_data()</a></code> function. This function takes two optional arguments, <code>region</code> and <code>speciesID</code>. If omitted, all data the user has access to will be downloaded, including registrations for tagID’s not in the database. When <code>region</code> is specified, only detections for antennas in the specified region are returned. When <code>speciesID</code> is provided, only tags of that species are returned. <em>Important</em> - tagIDs not in the database will have an unknown species, hence are not returned when <code>speciesID</code> is provided.</p>
 <p>The downloaded data takes the form of a complete SQLite database, subset according to the above. If the <code>db_file()</code> is not provided, this is saved to a <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile()</a></code>. The file path to the saved database is returned.</p>
 <p>For convenience, all tables from this SQLite database can be extracted into R <code>data.frames</code> with <code><a href="reference/extract_data.html">extract_data()</a></code> - by default these tables are extracted into a separate environment that is returned by the function</p>
-<p>```{r} fish_db = download_data(my_session, …)</p>
-<p>fish_data = extract_data(fish_db)</p>
-<pre><code>
-In this example, `fish_data` is an environment and the tables within
-can be accessed via the `$` operator.
-
-```{r}
-fish_data$Tags</code></pre>
+<pre class="{r}"><code><span><span class="va">fish_db</span> <span class="op">=</span> <span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span><span class="va">my_session</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fish_data</span> <span class="op">=</span> <span class="fu"><a href="reference/extract_data.html">extract_data</a></span><span class="op">(</span><span class="va">fish_db</span><span class="op">)</span></span></code></pre>
+<p>In this example, <code>fish_data</code> is an environment and the tables within can be accessed via the <code>$</code> operator.</p>
+<pre class="{r}"><code><span><span class="va">fish_data</span><span class="op">$</span><span class="va">Tags</span></span></code></pre>
 <p>Documentation on the database can be found <a href="https://fishsciences.github.io/telemetry/articles/database.html" class="external-link">here</a>.</p>
 </div>
 <div class="section level3">

@@ -1,4 +1,4 @@
-pandoc: 3.1.3
+pandoc: '2.12'
 pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
@@ -7,5 +7,9 @@ articles:
   database: database.html
   regions: regions.html
   telemetry_api: telemetry_api.html
+<<<<<<< HEAD
 last_built: 2024-05-22T20:12Z
+=======
+last_built: 2024-05-20T21:07Z
+>>>>>>> d06b114ccca6be0e7db71f52a09c0e848c25b596
 

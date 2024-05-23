@@ -44,10 +44,18 @@ In order to request administrative actions using the R package, the correct endp
   - unUID: unique identifier for each registered individual
 
 ### /api/admin/create/network
-  - unNetName: name of a group of antennas owned by the same organization
-  - unOID: unique identifier for each registered organization
-  - unToken: unique auto-generated token for each session
-  - antData: additional information for each antenna, such as lat, long, region, etc.
+
+  - unNetName: name of a group of antennas owned by the same organization 
+  - unOID: unique identifier for each registered organization 
+  - unToken: unique auto-generated token for each session 
+  - antData: additional information for each antenna; required columns are: 
+    - unATID: unique identifier for each registered antenna tech, returned by create/tech/antenna 
+    - antDataEnd: date time that the antenna stopped operating, must be POSIX timestamp 
+    - unLat: latitude of the antenna 
+    - unLong: longitude of the antenna 
+    - unAntName: unique name for each registered antenna 
+    - unRegion: unique identifier for the predefined geographic region of interest 
+    - antDataStart: date time that the antenna began operating, must be POSIX timestamp 
 
 ### /api/admin/create/project
   - createProjReqDesc: additional information about a project

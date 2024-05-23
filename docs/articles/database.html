@@ -81,8 +81,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>The Telemetry Database</h1>
-                        <h4 data-toc-skip class="author">Alex
-Constandache</h4>
+                        <h4 data-toc-skip class="author">Alex Constandache</h4>
             
       
       
@@ -109,33 +108,19 @@ Constandache</h4>
 <li>Technology compatibility records</li>
 <li>Registration records</li>
 </ul>
-<div class="float">
-<img src="pitdb.schema_20240228.png" alt="The schema for the telemetry database"><div class="figcaption">The schema for the telemetry database</div>
+<div class="figure">
+<img src="pitdb.schema_20240228.png" alt=""><p class="caption">The schema for the telemetry database</p>
 </div>
-<p>Most of these entity types represent exactly what their name
-suggests, but a few might require additional explanations, which we
-provide in this document. Each entity type corresponds to a table
-containing records of that type.</p>
-<p>With two exceptions (i.e. affiliations and tech compatibility
-records), each of these tables contain an integer-valued column called
-id. This is a unique numeric identifier automatically assigned to a
-record by the database system when that record is created. These
-identifiers are used internally to reference the record from another
-table. They are of interest only to library writers. There is no reason
-to ever present them to the end user, although there is no harm in doing
-so. Figure 1 contains a diagram representing all the tables and the way
-they reference each other using these keys (represented as dotted
-lines).</p>
+<p>Most of these entity types represent exactly what their name suggests, but a few might require additional explanations, which we provide in this document. Each entity type corresponds to a table containing records of that type.</p>
+<p>With two exceptions (i.e. affiliations and tech compatibility records), each of these tables contain an integer-valued column called id. This is a unique numeric identifier automatically assigned to a record by the database system when that record is created. These identifiers are used internally to reference the record from another table. They are of interest only to library writers. There is no reason to ever present them to the end user, although there is no harm in doing so. Figure 1 contains a diagram representing all the tables and the way they reference each other using these keys (represented as dotted lines).</p>
 <div class="section level3">
 <h3 id="user-records-table-users-consist-of-the-following-fields">User records (table Users) consist of the following fields:<a class="anchor" aria-label="anchor" href="#user-records-table-users-consist-of-the-following-fields"></a>
 </h3>
 <ul>
 <li>id, unique integer-valued record identifier</li>
-<li>name, a text-valued unique identifier intended for human use (e.g
-logging in)</li>
+<li>name, a text-valued unique identifier intended for human use (e.g logging in)</li>
 <li>passwd, a text-valued salted hash of the user’s password.</li>
-<li>info, a free form text field providing additional information about
-the user, such as contact information.</li>
+<li>info, a free form text field providing additional information about the user, such as contact information.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -144,8 +129,7 @@ the user, such as contact information.</li>
 <ul>
 <li>id, unique integer-valued record identifier</li>
 <li>name, a text-valued unique identifier intended for human use.</li>
-<li>info, a free form text field providing additional information about
-the organization.</li>
+<li>info, a free form text field providing additional information about the organization.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -155,29 +139,16 @@ the organization.</li>
 <li>userID, an integer-valued field referencing a User record</li>
 <li>orgID, an integer-valued field referencing an Org record</li>
 </ul>
-<p>The presence of a (userID, orgID) pair encodes the existence of an
-active affiliation between the referenced user and organization. It is
-an error for such a pair of values to appear more than once in this
-table. Attempting to create such a duplicate will produce an SQL error,
-which will be converted by the REST interface into an HTTP error. The
-main purpose of this table is to enforce data access controls.</p>
+<p>The presence of a (userID, orgID) pair encodes the existence of an active affiliation between the referenced user and organization. It is an error for such a pair of values to appear more than once in this table. Attempting to create such a duplicate will produce an SQL error, which will be converted by the REST interface into an HTTP error. The main purpose of this table is to enforce data access controls.</p>
 </div>
 <div class="section level3">
 <h3 id="tag-technology-records-table-tagtech">Tag technology records (table TagTech):<a class="anchor" aria-label="anchor" href="#tag-technology-records-table-tagtech"></a>
 </h3>
-<p>These records provide a description of the technical characteristics
-of a particular type of tag. Every tag record references exactly one
-record in this table, to identify its technical capabilities. The fields
-are:</p>
+<p>These records provide a description of the technical characteristics of a particular type of tag. Every tag record references exactly one record in this table, to identify its technical capabilities. The fields are:</p>
 <ul>
 <li>id, a unique integer-valued identifier</li>
-<li>name, a unique text-valued record identifier intended for human
-consumption</li>
-<li>manifest, a text field containing a free-form JSON-encoded
-description of a type of tag. There are no constraints on this field,
-other than the fact that it needs to be well-formed JSON. It may contain
-information such as manufacturer, model, data fields reported during
-scanning, their units, etc.</li>
+<li>name, a unique text-valued record identifier intended for human consumption</li>
+<li>manifest, a text field containing a free-form JSON-encoded description of a type of tag. There are no constraints on this field, other than the fact that it needs to be well-formed JSON. It may contain information such as manufacturer, model, data fields reported during scanning, their units, etc.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -185,38 +156,25 @@ scanning, their units, etc.</li>
 </h3>
 <ul>
 <li>id, a unique integer-valued identifier</li>
-<li>name, a unique text-valued record identifier intended for human
-consumption</li>
-<li>manifest, a text field containing a free-form JSON-encoded
-description of a type of antenna. There are no constraints on this
-field, other than the fact that it needs to be well-formed JSON. It may
-contain information such as manufacturer, model, operating frequency,
-maximum scanning distance, etc.</li>
+<li>name, a unique text-valued record identifier intended for human consumption</li>
+<li>manifest, a text field containing a free-form JSON-encoded description of a type of antenna. There are no constraints on this field, other than the fact that it needs to be well-formed JSON. It may contain information such as manufacturer, model, operating frequency, maximum scanning distance, etc.</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="technology-compatibility-records-table-techcompat">Technology compatibility records (table TechCompat):<a class="anchor" aria-label="anchor" href="#technology-compatibility-records-table-techcompat"></a>
 </h3>
 <ul>
-<li>antennaTechID, an integer-valued field referencing an AntennaTech
-record</li>
-<li>tagTechID, an integer-valued field referencing an TagTech
-record</li>
+<li>antennaTechID, an integer-valued field referencing an AntennaTech record</li>
+<li>tagTechID, an integer-valued field referencing an TagTech record</li>
 </ul>
-<p>The presence of a pair (antennaTechID, tagTechID) in this table
-expresses the fact that a particular type of antenna is capable of
-scanning tags of the given type, when they are in range. Any such pair
-may appear at most once in this table. Attempting to crate a duplicate
-record in this table will result in an SQL error which will be turned by
-the REST API into an HTTP error.</p>
+<p>The presence of a pair (antennaTechID, tagTechID) in this table expresses the fact that a particular type of antenna is capable of scanning tags of the given type, when they are in range. Any such pair may appear at most once in this table. Attempting to crate a duplicate record in this table will result in an SQL error which will be turned by the REST API into an HTTP error.</p>
 </div>
 <div class="section level3">
 <h3 id="species-records-table-species">Species records (table Species):<a class="anchor" aria-label="anchor" href="#species-records-table-species"></a>
 </h3>
 <ul>
 <li>id, a unique integer-valued identifier for the species</li>
-<li>name, a unique text-valued identifier for the species (e.g., the
-scientific name of species), intended for human consumption.</li>
+<li>name, a unique text-valued identifier for the species (e.g., the scientific name of species), intended for human consumption.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -226,47 +184,31 @@ scientific name of species), intended for human consumption.</li>
 <li>id, unique integer-valued project identifier.</li>
 <li>name, the name of project, text-valued field.<br>
 </li>
-<li>ownerID, integer field that references the record in the Orgs table
-corresponding to the organization that has authority over the
-project.</li>
-<li>info, free-form text field for additional information about the
-project (e.g. points of contact)</li>
+<li>ownerID, integer field that references the record in the Orgs table corresponding to the organization that has authority over the project.</li>
+<li>info, free-form text field for additional information about the project (e.g. points of contact)</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="batch-records-table-batches">Batch records (table Batches)<a class="anchor" aria-label="anchor" href="#batch-records-table-batches"></a>
 </h3>
-<p>A batch represents a group of tags that have the same underlying
-technology, are part of the same project, were implanted in specimens of
-a single species, and have implantation data records of uniform
-structure and quality.</p>
+<p>A batch represents a group of tags that have the same underlying technology, are part of the same project, were implanted in specimens of a single species, and have implantation data records of uniform structure and quality.</p>
 <ul>
 <li>id, unique integer-valued identifier for this batch</li>
-<li>tagTechID, reference to the TagTech record for the underlying
-technology of the tags in this batch<br>
+<li>tagTechID, reference to the TagTech record for the underlying technology of the tags in this batch<br>
 </li>
-<li>speciesID, reference to the Species record for the species tagged
-using tags in this batch</li>
-<li>projectID,reference to the Project record representing project this
-batch belongs to.</li>
-<li>payloadSchema, a free-form text field containing a JSON description
-of the additional data that was recorded for each tag in this batch at
-implantation time. This is just a data schema, not the data itself. The
-actual data is stored in the payload field of each individual Tag
-record.</li>
+<li>speciesID, reference to the Species record for the species tagged using tags in this batch</li>
+<li>projectID,reference to the Project record representing project this batch belongs to.</li>
+<li>payloadSchema, a free-form text field containing a JSON description of the additional data that was recorded for each tag in this batch at implantation time. This is just a data schema, not the data itself. The actual data is stored in the payload field of each individual Tag record.</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="network-records-table-networks">Network records (table Networks):<a class="anchor" aria-label="anchor" href="#network-records-table-networks"></a>
 </h3>
-<p>A network record represents a group of antennas that are owned by the
-same organization.</p>
+<p>A network record represents a group of antennas that are owned by the same organization.</p>
 <ul>
 <li>id, unique integer-valued identifier for this netword</li>
-<li>ownerID, reference to the Org record representing the organization
-that owns this antenna network.</li>
-<li>name, a text -valued unique identifier for this network, intended
-for human use.</li>
+<li>ownerID, reference to the Org record representing the organization that owns this antenna network.</li>
+<li>name, a text -valued unique identifier for this network, intended for human use.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -274,20 +216,14 @@ for human use.</li>
 </h3>
 <ul>
 <li>id, a unique integer-valued identifier for an antenna</li>
-<li>name, a unique text-valued identifier of an antenna, meant for human
-use.</li>
-<li>techID, a reference to the AntennaTech record describing the
-underlying technology of the antenna</li>
-<li>networkID: reference to the Network record describing the network
-this antenna belong to.</li>
+<li>name, a unique text-valued identifier of an antenna, meant for human use.</li>
+<li>techID, a reference to the AntennaTech record describing the underlying technology of the antenna</li>
+<li>networkID: reference to the Network record describing the network this antenna belong to.</li>
 <li>startTime time when the antenna first became operational</li>
-<li>endTime time when the antenna was decommissioned (if it is null,
-then the antenna is still in use)</li>
+<li>endTime time when the antenna was decommissioned (if it is null, then the antenna is still in use)</li>
 <li>latitude latitude of antenna location (stored as a float)</li>
 <li>longitude longitude of antenna location. (stored as a float)</li>
-<li>region the predefined geographic region in which the antenna is
-located. Consistency with latitude and longitude data is not
-checked.</li>
+<li>region the predefined geographic region in which the antenna is located. Consistency with latitude and longitude data is not checked.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -295,16 +231,10 @@ checked.</li>
 </h3>
 <ul>
 <li>id, a unique integer-valued identifier for the tag</li>
-<li>name unique text-valued identifier of the tag. This is the actual
-identifier the tag beams back when scanned (e.g.,
-8000E1349EA72A50).</li>
+<li>name unique text-valued identifier of the tag. This is the actual identifier the tag beams back when scanned (e.g., 8000E1349EA72A50).</li>
 <li>batchID: reference for the batch record this tag belongs to.</li>
 <li>time, date and time when the tag was deployed</li>
-<li>payload, free form JSON field containing additional information
-collected at implantation time (e.g., fish metadata, like { “fork
-length”: 110, “weight”: 112}). This field should conform to the schema
-declared in the payloadSchema field of the corresponding Batch record,
-although the system does not verify compliance.</li>
+<li>payload, free form JSON field containing additional information collected at implantation time (e.g., fish metadata, like { “fork length”: 110, “weight”: 112}). This field should conform to the schema declared in the payloadSchema field of the corresponding Batch record, although the system does not verify compliance.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -313,13 +243,9 @@ although the system does not verify compliance.</li>
 <ul>
 <li>id, unique integer-valued identifier for the registration</li>
 <li>time, date and time of the registration</li>
-<li>antennaID reference to the Antenna record for the antenna that
-recorded the registration</li>
+<li>antennaID reference to the Antenna record for the antenna that recorded the registration</li>
 <li>tagID reference to the Tag record of the scanned tag</li>
-<li>payload JSON encoded field containing any additional data reported
-by the tag. This should conform to the schema declared in the manifest
-field of the corresponding TagTech record, although conformance is not
-checked by the system.</li>
+<li>payload JSON encoded field containing any additional data reported by the tag. This should conform to the schema declared in the manifest field of the corresponding TagTech record, although conformance is not checked by the system.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -327,19 +253,12 @@ checked by the system.</li>
 </h3>
 <ul>
 <li>id unique integer identifier</li>
-<li>antennaID, reference to the Antenna record representing the antenna
-affected by this outage</li>
+<li>antennaID, reference to the Antenna record representing the antenna affected by this outage</li>
 <li>startTime: time when the outage began</li>
-<li>endTime: time when the outage ended (null if the outage is
-ongoing)</li>
-<li>info, free form text field containing additional information about
-the outage.</li>
+<li>endTime: time when the outage ended (null if the outage is ongoing)</li>
+<li>info, free form text field containing additional information about the outage.</li>
 </ul>
-<p>A schema of table relationships in the pilot database for the
-centralized PIT database for the Sacramento-San Joaquin Delta is shown
-in Figure 1. Ownership information is defined at the Batch and Network
-level, and propagated transitively to entries that reference those
-records.</p>
+<p>A schema of table relationships in the pilot database for the centralized PIT database for the Sacramento-San Joaquin Delta is shown in Figure 1. Ownership information is defined at the Batch and Network level, and propagated transitively to entries that reference those records.</p>
 </div>
   </div>
 
