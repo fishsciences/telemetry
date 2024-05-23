@@ -13,16 +13,16 @@ if(file.exists("toy_credentials.R")){
   # alternatives
   send_api_request(a,
                    end_point = "/api/list/users",
-                   unOID = 1,
+                   unOID = 2,
                    unToken = a$unToken)
 
   send_api_request(a,
                    end_point = "/api/list/users",
-                   unOID = 4, simplify = FALSE)
+                   unOID = 4, simplify = TRUE)
 
   send_api_request(a,
                    end_point = "/api/list/affiliations",
-                   unUID = 10)
+                   unUID = 2)
   
   list_db_entry("users", 1, a)
   list_db_entry("users", 2, a)

@@ -108,6 +108,8 @@ send_api_request = function(session,
 
 ##' @rdname check_variables
 ##' @export
+##' @examples
+##' list_endpoints()
 list_endpoints = function()
 {
   names(api_variable_names)
@@ -115,6 +117,8 @@ list_endpoints = function()
 
 ##' @rdname check_variables
 ##' @export
+##' @examples
+##' list_endpoint_variable("/api/admin/create/user")
 list_endpoint_variable = function(end_pt = c())
 {
   if(length(end_pt) > 0 && !all(end_pt %in% names(api_variable_names)))

@@ -1,3 +1,21 @@
+##' A utility for creating a nested list for marshalling to JSON from
+##' a simple data.frame. This function will rarely be called on its
+##' own - instead, it is called from inside \code{api_upload_data()}.
+##'
+##' @title Create Registration Data
+##' @param df data.frame, with column names exactly "unAntName",
+##'   "unTagName", "regDataTime"
+##' @param data_cols character, the name of columns to use for the
+##'   data payload.
+##' @param req_cols character, the names of columns required to be in
+##'   the data.frame
+##' @return
+##' @author Matt Espe
+##' @export
+##' @examples
+##' \dontrun{
+##' create_registration_data(detection_data, data_cols = c("temp_C", "turbidity"))
+##' }
 create_registration_data = function(df,
                                     data_cols,
                                     req_cols = c("unAntName", "unTagName",

@@ -26,6 +26,10 @@ variable names, endpoint names, or NULL
 Convienence functions to list and check the variables for each API
 endpoint.
 }
+\examples{
+list_endpoints()
+list_endpoint_variable("/api/admin/create/user")
+}
 \author{
 Matt Espe
 }

@@ -46,6 +46,23 @@ Downloads the data for a specific user, species, and region into a
 temporarly (or not) SQLite3 database. The data can be extracted
 from this database via the \code{extract_data()} function.
 }
+\examples{
+\dontrun{
+# All data
+detection_db = download_data(my_session)
+
+# One species
+detection_db = dowloand(data(my_session, speciesID = 1)
+
+# defaults to putting tables in an environment
+detection_data = extract_data(detection_db)
+
+# Access data via $
+names(detection_data)
+detection_data$Registrations
+as.list(detection_data)
+}
+}
 \author{
 Matt Espe
 }

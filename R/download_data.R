@@ -16,6 +16,22 @@
 ##' @return character 
 ##' @author Matt Espe
 ##' @export
+##' @examples
+##' \dontrun{
+##' # All data
+##' detection_db = download_data(my_session)
+##'
+##' # One species
+##' detection_db = dowloand(data(my_session, speciesID = 1)
+##'
+##' # defaults to putting tables in an environment
+##' detection_data = extract_data(detection_db)
+##'
+##' # Access data via $
+##' names(detection_data)
+##' detection_data$Registrations
+##' as.list(detection_data)
+##' }
 download_data = function(session,
                          region,
                          speciesID,
@@ -74,6 +90,22 @@ download_data = function(session,
 ##' @return environment, with one data.frame per table in the input database 
 ##' @author Matt Espe
 ##' @export
+##' @examples
+##' \dontrun{
+##' # All data
+##' detection_db = download_data(my_session)
+##'
+##' # One species
+##' detection_db = dowloand(data(my_session, speciesID = 1)
+##'
+##' # defaults to putting tables in an environment
+##' detection_data = extract_data(detection_db)
+##'
+##' # Access data via $
+##' names(detection_data)
+##' detection_data$Registrations
+##' as.list(detection_data)
+##' }
 extract_data = function(db_file, env = new.env())
 {
   db = dbConnect(RSQLite::SQLite(), db_file)
