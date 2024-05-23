@@ -81,7 +81,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Telemetry database API documentation</h1>
-                        <h4 data-toc-skip class="author">Jasmine Williamshen</h4>
+                        <h4 data-toc-skip class="author">Jasmine
+Williamshen</h4>
             
       
       
@@ -94,19 +95,38 @@
 <div class="section level2">
 <h2 id="telemetry-database-api-documentation">Telemetry database API documentation<a class="anchor" aria-label="anchor" href="#telemetry-database-api-documentation"></a>
 </h2>
-<p>The REST API is a layer that sits in front of the database that receives requests to administer actions (e.g., upload data; create/delete users, orgs). The R package mirrors the API and serves as the interface for users to submit requests and perform actions on the database (Figure 1). The purpose of this document is to describe fields in the API (and the R package) for performing administrative actions to the database. If you are looking for documentation regarding data downloaded from the database, please see the article, The Telemetry Database. In order to request administrative actions using the R package, the correct endpoint must be identified and the required keys for each endpoint must be correctly provided. This document details each endpoint (Figure 2) and the corresponding keys that are required.</p>
-<div class="figure">
-<img src="db_relations.png" alt=""><p class="caption">Figure 1. Conceptual diagram depicting the workflow for the Telemetry database. The database can only be accessed through the API, which is enabled for users by the accompanying R package.</p>
+<p>The REST API is a layer that sits in front of the database that
+receives requests to administer actions (e.g., upload data;
+create/delete users, orgs). The R package mirrors the API and serves as
+the interface for users to submit requests and perform actions on the
+database (Figure 1). The purpose of this document is to describe fields
+in the API (and the R package) for performing administrative actions to
+the database. If you are looking for documentation regarding data
+downloaded from the database, please see the article, The Telemetry
+Database. In order to request administrative actions using the R
+package, the correct endpoint must be identified and the required keys
+for each endpoint must be correctly provided. This document details each
+endpoint (Figure 2) and the corresponding keys that are required.</p>
+<div class="float">
+<img src="db_relations.png" alt="Figure 1. Conceptual diagram depicting the workflow for the Telemetry database. The database can only be accessed through the API, which is enabled for users by the accompanying R package."><div class="figcaption">Figure 1. Conceptual diagram depicting the
+workflow for the Telemetry database. The database can only be accessed
+through the API, which is enabled for users by the accompanying R
+package.</div>
 </div>
-<div class="figure">
-<img src="api_endpoints.png" alt=""><p class="caption">Figure 2. A summary of every available endpoint in the API. Each endpoint has different required keys, all of which must be supplied correctly (keys are case-sensitive), to successfully submit the API request.</p>
+<div class="float">
+<img src="api_endpoints.png" alt="Figure 2. A summary of every available endpoint in the API. Each endpoint has different required keys, all of which must be supplied correctly (keys are case-sensitive), to successfully submit the API request."><div class="figcaption">Figure 2. A summary of every available endpoint
+in the API. Each endpoint has different required keys, all of which must
+be supplied correctly (keys are case-sensitive), to successfully submit
+the API request.</div>
 </div>
 <div class="section level4">
 <h4 id="apiauthlogin">/api/auth/login<a class="anchor" aria-label="anchor" href="#apiauthlogin"></a>
 </h4>
 <ul>
-<li>unUserName: unique string of characters for each registered individual</li>
-<li>loginPwd: private password for each registered individual to login</li>
+<li>unUserName: unique string of characters for each registered
+individual</li>
+<li>loginPwd: private password for each registered individual to
+login</li>
 </ul>
 </div>
 <div class="section level4">
@@ -120,8 +140,10 @@
 <h4 id="apidatadownload">/api/data/download<a class="anchor" aria-label="anchor" href="#apidatadownload"></a>
 </h4>
 <ul>
-<li>unRegion: unique identifier for the predefined geographic region of interest, optional</li>
-<li>unSpecID: unique identifier for each registered species, optional</li>
+<li>unRegion: unique identifier for the predefined geographic region of
+interest, optional</li>
+<li>unSpecID: unique identifier for each registered species,
+optional</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -129,10 +151,16 @@
 <h4 id="apidataupload">/api/data/upload<a class="anchor" aria-label="anchor" href="#apidataupload"></a>
 </h4>
 <ul>
-<li>unAntName: unique name of an antenna, must match the name of an antenna already in the database</li>
-<li>temp: example of other data columns that can be accepted into the database, can be pretty much anything</li>
-<li>unTagName: unique identifier for each registered tag. TagName does not need to be present in the database. If the TagName is already in the database and owned by an organization, all access permissions will be enforced for the new registration automatically.</li>
-<li>regDataTime: date and time that the tag was registered by an antenna</li>
+<li>unAntName: unique name of an antenna, must match the name of an
+antenna already in the database</li>
+<li>temp: example of other data columns that can be accepted into the
+database, can be pretty much anything</li>
+<li>unTagName: unique identifier for each registered tag. TagName does
+not need to be present in the database. If the TagName is already in the
+database and owned by an organization, all access permissions will be
+enforced for the new registration automatically.</li>
+<li>regDataTime: date and time that the tag was registered by an
+antenna</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -149,18 +177,24 @@
 <h4 id="apiadmincreatenetwork">/api/admin/create/network<a class="anchor" aria-label="anchor" href="#apiadmincreatenetwork"></a>
 </h4>
 <ul>
-<li>unNetName: name of a group of antennas owned by the same organization</li>
+<li>unNetName: name of a group of antennas owned by the same
+organization</li>
 <li>unOID: unique identifier for each registered organization</li>
 <li>unToken: unique auto-generated token for each session</li>
-<li>antData: additional information for each antenna; required columns are:
+<li>antData: additional information for each antenna; required columns
+are:
 <ul>
-<li>unATID: unique identifier for each registered antenna tech, returned by create/tech/antenna</li>
-<li>antDataEnd: date time that the antenna stopped operating, must be POSIX timestamp</li>
+<li>unATID: unique identifier for each registered antenna tech, returned
+by create/tech/antenna</li>
+<li>antDataEnd: date time that the antenna stopped operating, must be
+POSIX timestamp</li>
 <li>unLat: latitude of the antenna</li>
 <li>unLong: longitude of the antenna</li>
 <li>unAntName: unique name for each registered antenna</li>
-<li>unRegion: unique identifier for the predefined geographic region of interest</li>
-<li>antDataStart: date time that the antenna began operating, must be POSIX timestamp</li>
+<li>unRegion: unique identifier for the predefined geographic region of
+interest</li>
+<li>antDataStart: date time that the antenna began operating, must be
+POSIX timestamp</li>
 </ul>
 </li>
 </ul>
@@ -182,7 +216,8 @@
 <li>freqUnit: units that frequency was recorded, such as kHz</li>
 <li>frequency: operational frequency of antenna, such as 135</li>
 <li>range: operational read range of antenna, such as 18</li>
-<li>rangeUnit: units that operational read range was reported, such as cm</li>
+<li>rangeUnit: units that operational read range was reported, such as
+cm</li>
 <li>unATName: unique name for each registered antenna</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
@@ -191,10 +226,14 @@
 <h4 id="apiadmincreatetechtag">/api/admin/create/tech/tag<a class="anchor" aria-label="anchor" href="#apiadmincreatetechtag"></a>
 </h4>
 <ul>
-<li>dataFields: additional data fields recorded for a batch of tags, such as temperature</li>
-<li>dataUnits: units that additional data fields were recorded in, such as Celsius</li>
-<li>info: additional information about the tags, such as the manufacturer</li>
-<li>unTTName: unique identifier of the tag technology name, such as the model number</li>
+<li>dataFields: additional data fields recorded for a batch of tags,
+such as temperature</li>
+<li>dataUnits: units that additional data fields were recorded in, such
+as Celsius</li>
+<li>info: additional information about the tags, such as the
+manufacturer</li>
+<li>unTTName: unique identifier of the tag technology name, such as the
+model number</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -202,8 +241,10 @@
 <h4 id="apiadmincreatetechcompat">/api/admin/create/tech/compat<a class="anchor" aria-label="anchor" href="#apiadmincreatetechcompat"></a>
 </h4>
 <ul>
-<li>unATID: unique identifier for each registered antenna technology record</li>
-<li>unTTID: unique identifier for each registered tag technology record</li>
+<li>unATID: unique identifier for each registered antenna technology
+record</li>
+<li>unTTID: unique identifier for each registered tag technology
+record</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -213,18 +254,21 @@
 <ul>
 <li>unProjectID: unique identifier for each registered project</li>
 <li>unSpecID: unique identifier for each registered species</li>
-<li>unTTID: unique identifier for each registered tag technology record</li>
+<li>unTTID: unique identifier for each registered tag technology
+record</li>
 <li>unTagName: unique identifier for each registered tag</li>
 <li>tagDataTime: date and time at the time of tag implantation</li>
 <li>unToken: unique auto-generated token for each session</li>
-<li>batchDataSchema: a data schema description of additional data that were recorded for each tag in this batch at time of implantation</li>
+<li>batchDataSchema: a data schema description of additional data that
+were recorded for each tag in this batch at time of implantation</li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="apiadmincreateorg">/api/admin/create/org<a class="anchor" aria-label="anchor" href="#apiadmincreateorg"></a>
 </h4>
 <ul>
-<li>createOrgInfo: additional information for a registered organization</li>
+<li>createOrgInfo: additional information for a registered
+organization</li>
 <li>unOrgName: unique name for each registered organization</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
@@ -233,7 +277,8 @@
 <h4 id="apiadmincreatespecies">/api/admin/create/species<a class="anchor" aria-label="anchor" href="#apiadmincreatespecies"></a>
 </h4>
 <ul>
-<li>unSpecName: unique species name, such as the scientific or common name</li>
+<li>unSpecName: unique species name, such as the scientific or common
+name</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -241,9 +286,12 @@
 <h4 id="apiadmincreateuser">/api/admin/create/user<a class="anchor" aria-label="anchor" href="#apiadmincreateuser"></a>
 </h4>
 <ul>
-<li>createUserInfo: additional information for a registered individual, such as an email</li>
-<li>unUserName: unique first and last name for each registered individual</li>
-<li>createUserPass: a registered individual’s password for their account</li>
+<li>createUserInfo: additional information for a registered individual,
+such as an email</li>
+<li>unUserName: unique first and last name for each registered
+individual</li>
+<li>createUserPass: a registered individual’s password for their
+account</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -260,7 +308,8 @@
 <h4 id="apiadmindeletenetwork">/api/admin/delete/network<a class="anchor" aria-label="anchor" href="#apiadmindeletenetwork"></a>
 </h4>
 <ul>
-<li>unNetID: unique identifier for each registered group of antennas</li>
+<li>unNetID: unique identifier for each registered group of
+antennas</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -276,7 +325,8 @@
 <h4 id="apiadmindeletetechantenna">/api/admin/delete/tech/antenna<a class="anchor" aria-label="anchor" href="#apiadmindeletetechantenna"></a>
 </h4>
 <ul>
-<li>unATID: unique identifier for each registered antenna technology record</li>
+<li>unATID: unique identifier for each registered antenna technology
+record</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -284,7 +334,8 @@
 <h4 id="apiadmindeletetechtag">/api/admin/delete/tech/tag<a class="anchor" aria-label="anchor" href="#apiadmindeletetechtag"></a>
 </h4>
 <ul>
-<li>unTTID: unique identifier for each registered tag technology record</li>
+<li>unTTID: unique identifier for each registered tag technology
+record</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -292,8 +343,10 @@
 <h4 id="apiadmindeletetechcompat">/api/admin/delete/tech/compat<a class="anchor" aria-label="anchor" href="#apiadmindeletetechcompat"></a>
 </h4>
 <ul>
-<li>unATID: unique identifier for each registered antenna technology record</li>
-<li>unTTID: unique identifier for each registered tag technology record</li>
+<li>unATID: unique identifier for each registered antenna technology
+record</li>
+<li>unTTID: unique identifier for each registered tag technology
+record</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -301,7 +354,9 @@
 <h4 id="apiadmindeletebatch">/api/admin/delete/batch<a class="anchor" aria-label="anchor" href="#apiadmindeletebatch"></a>
 </h4>
 <ul>
-<li>unBatchID: unique identifier for each registered group of tags with the same underlying technology, part of the same project, implanted into same species, and data records with uniform structure and quality</li>
+<li>unBatchID: unique identifier for each registered group of tags with
+the same underlying technology, part of the same project, implanted into
+same species, and data records with uniform structure and quality</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
@@ -362,7 +417,8 @@
 <h4 id="apilisttechcompatantenna">/api/list/tech/compat/antenna<a class="anchor" aria-label="anchor" href="#apilisttechcompatantenna"></a>
 </h4>
 <ul>
-<li>unATID: unique identifier for each registered antenna technology record</li>
+<li>unATID: unique identifier for each registered antenna technology
+record</li>
 <li>unToken: unique auto-generated token for each session</li>
 </ul>
 </div>
