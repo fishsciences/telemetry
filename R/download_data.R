@@ -9,11 +9,20 @@
 ##' @param token character, the token for the established session
 ##' @param curl_handle a curl handle for the established session
 ##' @param api_baseurl character, the base URL for the database API
-##' @param db_file character, the file to store the downloaded data in. Defaults to a temporary file.
+##' @param db_file character, the file to store the downloaded data
+##'   in. Defaults to a temporary file.
 ##' @param end_point character, the suffix for the download end point
-##' @param api_url character, the full url for the API end point for downloading data
+##' @param api_url character, the full url for the API end point for
+##'   downloading data
 ##' @param ... additional arguments passed to \code{getBinaryURL()}
-##' @return character 
+##' @param debug_json logial, if TRUE the function returns the JSON
+##'   payload as a string and does not send the request. This is
+##'   primarily for debugging API behavior and checking the JSON
+##'   payloads for correctness. The JSON will include white space for
+##'   pretty printing, e.g. \code{cat(payload)}
+##' @return character, the file path to the downloaded SQLite
+##'   database, or when \code{debug_json = TRUE} a string representing
+##'   the JSON payload.
 ##' @author Matt Espe
 ##' @export
 ##' @examples
@@ -41,7 +50,8 @@ download_data = function(session,
                          db_file = tempfile(),
                          end_point = "/api/data/download",
                          api_url = paste0(api_baseurl, end_point),
-                         ...)
+                         ...,
+                         debug_json = FALSE)
 {
   
   payload = list(downReqTok = c(unToken = token), downReqSpec = list())
@@ -53,6 +63,9 @@ download_data = function(session,
   
   payload = toJSON(payload, collapse = " ")
   payload = gsub("\\[\\]", "{}", payload) ## Hack to get the downReqSpec right
+
+  if(debug_json)
+    return(payload)
   
   ## browser()
   # for request status

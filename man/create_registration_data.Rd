@@ -20,6 +20,9 @@ data payload.}
 \item{req_cols}{character, the names of columns required to be in
 the data.frame}
 }
+\value{
+nested list
+}
 \description{
 A utility for creating a nested list for marshalling to JSON from
 a simple data.frame. This function will rarely be called on its

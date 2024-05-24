@@ -1,7 +1,7 @@
 Package: telemetry
 Type: Package
 Title: Telemetry helper functions
-Version: 0.8.3
+Version: 0.9.0
 Date: 2020-12-02
 Author: Myfanwy Johnston and Matt Espe
 Maintainer: Matt Espe <matt.espe@fishsciences.net>

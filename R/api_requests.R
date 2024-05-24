@@ -24,7 +24,8 @@
 ##' @param ... key = value pairs of parameters for each end point
 ##'   request. These vary by endpoint. For a list of the required
 ##'   variables for each end point, use
-##'   \code{list_endpoint_variable()}. See details for more information.
+##'   \code{list_endpoint_variable()}. See details for more
+##'   information.
 ##' @param end_point chracter, the end point for the API
 ##' @param token character, the unToken for an active session
 ##' @param curl_handle an existing curl handle for an active
@@ -41,8 +42,14 @@
 ##'   interactive confirmation to proceed. For non-interactive
 ##'   sessions, this must be set to TRUE to complete a delete
 ##'   operation.
+##' @param debug_json logial, if TRUE the function returns the JSON
+##'   payload as a string and does not send the request. This is
+##'   primarily for debugging API behavior and checking the JSON
+##'   payloads for correctness. The JSON will include white space for
+##'   pretty printing, e.g. \code{cat(payload)}
 ##' @return json or data.frame result (depending on value of
-##'   \code{simplify}
+##'   \code{simplify}, or if \code{debug_json = TRUE} the JSON
+##'   payload.
 ##' @author Matt Espe
 ##' @export
 ##' @examples
@@ -64,7 +71,8 @@ send_api_request = function(session,
                             api_url = paste0(api_baseurl, end_point),
                             .curlOpts = list(),
                             simplify = grepl("list", end_point),
-                            confirm_delete = FALSE)
+                            confirm_delete = FALSE,
+                            debug_json = FALSE)
 {
   if(length(end_point) != 1) stop("Please specify a single end_point")
 
@@ -83,7 +91,9 @@ send_api_request = function(session,
     payload = create_payload(..., end_pt = end_point)
   }
 
-  
+  if(debug_json)
+    return(toJSON(payload))
+           
   h = basicHeaderGatherer()
 
   rsp = getURL(url = api_url,

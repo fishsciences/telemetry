@@ -9,7 +9,7 @@
 ##'   data payload.
 ##' @param req_cols character, the names of columns required to be in
 ##'   the data.frame
-##' @return
+##' @return nested list
 ##' @author Matt Espe
 ##' @export
 ##' @examples
@@ -51,6 +51,11 @@ create_one_registration = function(df, other_cols)
 ##'   other columns from the \code{registration_data} to include in
 ##'   the "data" slot of the data payload. Will be marshalled to JSON
 ##'   before the upload.
+##' @param debug_json logial, if TRUE the function returns the JSON
+##'   payload as a string and does not send the request. This is
+##'   primarily for debugging API behavior and checking the JSON
+##'   payloads for correctness. The JSON will include white space for
+##'   pretty printing, e.g. \code{cat(payload)}
 ##' @rdname send_api_request
 ##' @export
 ##' @examples
@@ -70,12 +75,16 @@ api_upload_data = function(session,
                            curl_handle = session$curl,
                            api_baseurl = session$base_url,
                            api_url = paste0(api_baseurl, end_point),
-                           .curlOpts = list())
+                           .curlOpts = list(),
+                           debug_json = FALSE)
 {
   payload = list(
     upReqData = create_registration_data(registration_data,
                                          other_data_column_names),
     upReqTok = list(unToken = token))
+
+  if(debug_json)
+    return(toJSON(payload))
   
   h = basicHeaderGatherer()
   

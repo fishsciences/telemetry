@@ -15,7 +15,8 @@ send_api_request(
   api_url = paste0(api_baseurl, end_point),
   .curlOpts = list(),
   simplify = grepl("list", end_point),
-  confirm_delete = FALSE
+  confirm_delete = FALSE,
+  debug_json = FALSE
 )
 
 api_upload_data(
@@ -27,7 +28,8 @@ api_upload_data(
   curl_handle = session$curl,
   api_baseurl = session$base_url,
   api_url = paste0(api_baseurl, end_point),
-  .curlOpts = list()
+  .curlOpts = list(),
+  debug_json = FALSE
 )
 }
 \arguments{
@@ -37,7 +39,8 @@ api_upload_data(
 \item{...}{key = value pairs of parameters for each end point
 request. These vary by endpoint. For a list of the required
 variables for each end point, use
-\code{list_endpoint_variable()}. See details for more information.}
+\code{list_endpoint_variable()}. See details for more
+information.}
 
 \item{end_point}{chracter, the end point for the API}
 
@@ -63,6 +66,12 @@ interactive confirmation to proceed. For non-interactive
 sessions, this must be set to TRUE to complete a delete
 operation.}
 
+\item{debug_json}{logial, if TRUE the function returns the JSON
+payload as a string and does not send the request. This is
+primarily for debugging API behavior and checking the JSON
+payloads for correctness. The JSON will include white space for
+pretty printing, e.g. \code{cat(payload)}}
+
 \item{registration_data}{data.frame containing registration data
 to upload. Must have columns named "unAntName", "unTagName",
 "regDataTime"}
@@ -74,7 +83,8 @@ before the upload.}
 }
 \value{
 json or data.frame result (depending on value of
-  \code{simplify}
+  \code{simplify}, or if \code{debug_json = TRUE} the JSON
+  payload.
 }
 \description{
 This is a flexible function for interacting with any of the

@@ -14,7 +14,8 @@ download_data(
   db_file = tempfile(),
   end_point = "/api/data/download",
   api_url = paste0(api_baseurl, end_point),
-  ...
+  ...,
+  debug_json = FALSE
 )
 }
 \arguments{
@@ -30,16 +31,26 @@ download_data(
 
 \item{api_baseurl}{character, the base URL for the database API}
 
-\item{db_file}{character, the file to store the downloaded data in. Defaults to a temporary file.}
+\item{db_file}{character, the file to store the downloaded data
+in. Defaults to a temporary file.}
 
 \item{end_point}{character, the suffix for the download end point}
 
-\item{api_url}{character, the full url for the API end point for downloading data}
+\item{api_url}{character, the full url for the API end point for
+downloading data}
 
 \item{...}{additional arguments passed to \code{getBinaryURL()}}
+
+\item{debug_json}{logial, if TRUE the function returns the JSON
+payload as a string and does not send the request. This is
+primarily for debugging API behavior and checking the JSON
+payloads for correctness. The JSON will include white space for
+pretty printing, e.g. \code{cat(payload)}}
 }
 \value{
-character
+character, the file path to the downloaded SQLite
+  database, or when \code{debug_json = TRUE} a string representing
+  the JSON payload.
 }
 \description{
 Downloads the data for a specific user, species, and region into a
